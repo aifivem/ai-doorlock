@@ -1,0 +1,22 @@
+{
+  "mrpd_front": {
+    "label": "Mission Row front doors",
+    "model": "v_ilev_ph_door01",
+    "coords": {
+      "x": 434.7,
+      "y": -980.6,
+      "z": 30.8
+    },
+    "model2": "v_ilev_ph_door002",
+    "coords2": {
+      "x": 434.7,
+      "y": -983.2,
+      "z": 30.8
+    },
+    "locked": false,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  }
+}
