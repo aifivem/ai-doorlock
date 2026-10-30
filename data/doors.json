@@ -1,4 +1,5 @@
 {
+  "$schema": "./schemas/doors.schema.json",
   "mrpd_front": {
     "label": "Mission Row front doors",
     "model": "v_ilev_ph_door01",
