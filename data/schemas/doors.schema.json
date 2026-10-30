@@ -25,7 +25,7 @@
           "maxLength": 64
         },
         "coords": {
-          "description": "Door position: Stand in the door frame and use your position.",
+          "description": "Door position: Pick the door in the world with the free camera (it is outlined when aimed at): its model and exact position are filled in.",
           "type": "object",
           "required": [
             "x",
@@ -45,13 +45,12 @@
           }
         },
         "model2": {
-          "description": "Second leaf model: Only for double doors; empty for a single door.",
           "type": "string",
           "minLength": 0,
           "maxLength": 64
         },
         "coords2": {
-          "description": "Second leaf position",
+          "description": "Second leaf position: Only for double doors: pick the second leaf the same way; empty for a single door.",
           "type": "object",
           "required": [
             "x",
