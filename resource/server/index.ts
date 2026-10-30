@@ -4,6 +4,7 @@ import {
   aiLogChannels,
   GlobalGroup,
   isNear,
+  KeyedCooldowns,
   onClientCallback,
   online,
   provideExport,
@@ -47,18 +48,14 @@ function seed(): void {
     if (!doors.value.has(id)) locks.set(id, undefined);
 }
 seed();
-panel.onChange("doors", () => {
-  for (const id of lastFlip.keys())
-    if (!doors.value.has(id)) lastFlip.delete(id);
-  seed();
-});
+panel.onChange("doors", seed);
 
 const mayUse = (source: number, jobs: string[]): boolean =>
   jobs.length === 0 || online.jobs(source).some((job) => jobs.includes(job));
 
 /** A door flips at most this often: each flip is a GlobalState write replicated to every player. */
 const DOOR_COOLDOWN_MS = 500;
-const lastFlip = new Map<string, number>();
+const flips = new KeyedCooldowns<string>();
 
 onClientCallback(
   EVENTS.toggle,
@@ -73,10 +70,7 @@ onClientCallback(
     if (!door || !c || !isNear(source, c, door.distance + 1.5))
       return fail("DOOR_ERR_FAR");
     if (!mayUse(source, door.jobs)) return fail("DOOR_ERR_DENIED");
-    const now = GetGameTimer();
-    if (now - (lastFlip.get(id) ?? -Infinity) < DOOR_COOLDOWN_MS)
-      return fail("DOOR_ERR_BUSY");
-    lastFlip.set(id, now);
+    if (!flips.take(id, DOOR_COOLDOWN_MS)) return fail("DOOR_ERR_BUSY");
     const locked = locks.get(id) !== true;
     locks.set(id, locked);
     aiLog("doors", `${locked ? "locked" : "unlocked"} ${id}`, { source });
