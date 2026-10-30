@@ -3,6 +3,7 @@
   "DOOR_PROMPT_UNLOCK": "Unlock {0}",
   "DOOR_ERR_FAR": "You are too far from the door",
   "DOOR_ERR_DENIED": "You do not have the key",
+  "DOOR_ERR_BUSY": "Wait a moment",
   "ADMIN_TITLE": "Door locks",
   "ADMIN_TAB_DOORS": "Doors",
   "ADMIN_TAB_DOORS_DESC": "Doors that lock, who may lock them and how they start.",

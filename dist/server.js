@@ -43,8 +43,19 @@ function str(value, fallback, max = 64) {
 function record(value) {
 	return typeof value == "object" && value && !Array.isArray(value) ? value : {};
 }
-// ../../../packages/lib/src/shared/records.ts
-const isObject = (value) => typeof value == "object" && !!value && !Array.isArray(value);
+// ../../../packages/lib/src/shared/strict.ts
+function readText(value, max) {
+	if (typeof value != "string") return null;
+	let text = value.trim();
+	return text ? text.slice(0, max) : null;
+}
+const oneArg = (read) => ([value]) => {
+	let parsed = read(value);
+	return parsed === null ? null : [parsed];
+}, fail = (error) => ({
+	ok: !1,
+	error
+}), isObject = (value) => typeof value == "object" && !!value && !Array.isArray(value);
 function readRecords(raw, readOne) {
 	let out = new Map();
 	if (!isObject(raw)) return out;
@@ -205,7 +216,7 @@ const CORE = {
 	clientPlayerLoadedEvent: "ai-core:client:playerLoaded",
 	clientPlayerUnloadedEvent: "ai-core:client:playerUnloaded",
 	clientCharacterPortraitEvent: "ai-core:client:characterPortrait",
-	clientCharacterLookEvent: "ai-core:client:characterLook",
+	characterLooksEvent: "ai-core:client:characterLooks",
 	clientPromptPressedEvent: "ai-core:client:promptPressed",
 	clientCacheEvent: "ai-core:client:cache",
 	clientHudVisibleEvent: "ai-core:client:hudVisible",
@@ -265,6 +276,11 @@ function loadLocaleTexts(resource = GetCurrentResourceName()) {
 }
 // ../../../packages/lib/src/fivem/callbackNames.ts
 const requestEvent = (name) => `aicore:cb:${name}`, responseEvent = (resource) => `aicore:cbr:${resource}`;
+// ../../../packages/lib/src/server/position.ts
+function isNear(source, point, metres) {
+	let [x = 0, y = 0, z = 0] = GetEntityCoords(GetPlayerPed(String(source))), dx = x - point.x, dy = y - point.y, dz = z - point.z;
+	return dx * dx + dy * dy + dz * dz <= metres * metres;
+}
 resourceExport(CORE.resource);
 const log$5 = createLogger(GetCurrentResourceName()), gates = new Set();
 on("playerDropped", () => {
@@ -841,8 +857,8 @@ var OnlinePlayers = class {
 		return this.start(), this.onDuty.get(job) ?? EMPTY;
 	}
 };
-const EMPTY = new Set();
-new OnlinePlayers(), resourceExport(CORE.resource), resourceExport(CORE.resource), createLogger(GetCurrentResourceName());
+const EMPTY = new Set(), online = new OnlinePlayers();
+resourceExport(CORE.resource), resourceExport(CORE.resource), createLogger(GetCurrentResourceName());
 // ../../../packages/lib/src/server/command.ts
 const resource = GetCurrentResourceName();
 createLogger(resource), new class {
@@ -927,7 +943,7 @@ var GlobalGroup$1 = class extends Mirror {
 		GlobalState.set(this.prefix + id, value ?? null, !0), this.put(id, value);
 	}
 };
-resourceExport(CORE.resource), resourceExport(CORE.resource), resourceExport(CORE.resource), resourceExport(CORE.resource), resourceExport(CORE.resource), resourceExport(CORE.resource), resourceExport(CORE.resource), resourceExport(CORE.resource);
+resourceExport(CORE.resource), resourceExport(CORE.resource), resourceExport(CORE.resource), resourceExport(CORE.resource), resourceExport(CORE.resource), resourceExport(CORE.resource), resourceExport(CORE.resource), resourceExport(CORE.resource), resourceExport(CORE.resource);
 // resource/common/doors.ts
 const EVENTS = { toggle: "ai-doorlock:toggle" }, DOOR_TYPES = [
 	"single",
@@ -991,7 +1007,7 @@ const leaf = {
 		y: 0,
 		z: 0
 	}
-}, schema = {
+}, panel = new AdminPanel({
 	title: "ADMIN_TITLE",
 	icon: "lock",
 	files: { doors: {
@@ -1133,7 +1149,7 @@ const leaf = {
 			]
 		}]
 	}]
-}, core = resourceExport("ai-core"), panel = new AdminPanel(schema);
+});
 function upgradeOldDoors() {
 	for (let [id, value] of Object.entries(panel.get("doors"))) {
 		let v = record(value);
@@ -1158,33 +1174,31 @@ function upgradeOldDoors() {
 	}
 }
 upgradeOldDoors();
-const locks = new GlobalGroup("door:", stateBoolean), content = { doors: readDoors(panel.get("doors")) };
+const locks = new GlobalGroup("door:", stateBoolean), doors = panel.view("doors", readDoors);
 aiLogChannels({ doors: { active: !1 } });
 function seed() {
-	for (let door of content.doors.values()) locks.get(door.id) === void 0 && locks.set(door.id, door.locked);
+	for (let door of doors.value.values()) locks.get(door.id) === void 0 && locks.set(door.id, door.locked);
+	for (let id of locks.ids()) doors.value.has(id) || locks.set(id, void 0);
 }
 seed(), panel.onChange("doors", () => {
-	content.doors = readDoors(panel.get("doors")), seed();
+	for (let id of lastFlip.keys()) doors.value.has(id) || lastFlip.delete(id);
+	seed();
 });
-const mayUse = (source, jobs) => jobs.length === 0 || (core.GetJobs(source) ?? []).some((m) => jobs.includes(m.job));
+const mayUse = (source, jobs) => jobs.length === 0 || online.jobs(source).some((job) => jobs.includes(job)), lastFlip = new Map();
 onClientCallback(EVENTS.toggle, {
-	args: ([id]) => typeof id == "string" ? [id] : null,
+	args: oneArg((id) => readText(id, 64)),
+	rate: {
+		count: 2,
+		windowMs: 1e3
+	},
 	lock: !0
 }, (source, id) => {
-	let door = content.doors.get(id);
-	if (!door) return {
-		ok: !1,
-		error: "DOOR_ERR_FAR"
-	};
-	let [x = 0, y = 0, z = 0] = GetEntityCoords(GetPlayerPed(String(source))), c = centreOf(door);
-	if (!c || Math.hypot(x - c.x, y - c.y, z - c.z) > door.distance + 1.5) return {
-		ok: !1,
-		error: "DOOR_ERR_FAR"
-	};
-	if (!mayUse(source, door.jobs)) return {
-		ok: !1,
-		error: "DOOR_ERR_DENIED"
-	};
+	let door = doors.value.get(id), c = door ? centreOf(door) : null;
+	if (!door || !c || !isNear(source, c, door.distance + 1.5)) return fail("DOOR_ERR_FAR");
+	if (!mayUse(source, door.jobs)) return fail("DOOR_ERR_DENIED");
+	let now = GetGameTimer();
+	if (now - (lastFlip.get(id) ?? -Infinity) < 500) return fail("DOOR_ERR_BUSY");
+	lastFlip.set(id, now);
 	let locked = locks.get(id) !== !0;
 	return locks.set(id, locked), aiLog("doors", `${locked ? "locked" : "unlocked"} ${id}`, { source }), {
 		ok: !0,
@@ -1192,10 +1206,10 @@ onClientCallback(EVENTS.toggle, {
 	};
 });
 const setState = (id, locked) => {
-	typeof id == "string" && content.doors.has(id) && locks.set(id, locked === !0 || locked === 1);
+	typeof id == "string" && doors.value.has(id) && locks.set(id, locked === !0 || locked === 1);
 };
 registerExport("SetDoorState", setState), registerExport("IsLocked", (id) => typeof id == "string" && locks.get(id) === !0), provideExport("ox_doorlock", "setDoorState", setState), provideExport("ox_doorlock", "getDoor", (id) => {
-	let door = typeof id == "string" ? content.doors.get(id) : void 0;
+	let door = typeof id == "string" ? doors.value.get(id) : void 0;
 	return door ? {
 		id: door.id,
 		name: door.label,

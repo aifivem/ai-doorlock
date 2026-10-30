@@ -1,13 +1,16 @@
 import {
   AdminWorld,
+  callAction,
+  getPlayerData,
   GlobalGroup,
-  loadLocaleTexts,
-  notify,
+  onPlayerData,
   Points,
+  resourceExport,
+  seedPlayerData,
   stateBoolean,
-  triggerServerCallback,
 } from "@aicore-fivem/lib/client";
-import { Locale } from "common";
+import { createLogger } from "@aicore-fivem/lib/shared";
+import { Locale, ResourceName } from "common";
 import {
   centreOf,
   DOOR_PREFIX,
@@ -18,20 +21,17 @@ import {
 } from "common/doors";
 import { DoorSystem } from "./doorSystem";
 
+const core = resourceExport("ai-core");
+const log = createLogger(ResourceName);
 const world = new AdminWorld(["doors"]);
-const texts = loadLocaleTexts();
-const isObj = (v: unknown): v is Record<string, unknown> =>
-  typeof v === "object" && v !== null;
 
-async function toggle(id: string): Promise<void> {
-  const r: unknown = await triggerServerCallback(EVENTS.toggle, [id]).catch(
-    () => null,
-  );
-  if (isObj(r) && r.ok === true) return;
-  const key =
-    isObj(r) && typeof r.error === "string" ? r.error : "DOOR_ERR_FAR";
-  notify(texts[key] ?? key, "error", 2500);
-}
+const toggle = (id: string) =>
+  callAction(EVENTS.toggle, [id], { fallback: "DOOR_ERR_FAR" });
+
+/** A job door shows only to members of one of its jobs (the server checks again). */
+const mayUse = (door: Door): boolean =>
+  door.jobs.length === 0 ||
+  (getPlayerData("jobs") ?? []).some((m) => door.jobs.includes(m.job));
 
 /**
  * Doors on this client: registered in the game's door system (so the lock holds even when the door is not streamed),
@@ -44,7 +44,7 @@ class Doors {
   private readonly system = new DoorSystem();
   private list = new Map<string, Door>();
 
-  refresh(id: string): void {
+  refresh(id?: string): void {
     this.points.refresh(id);
   }
 
@@ -68,6 +68,7 @@ class Doors {
           ),
         icon: "door-closed",
         radius: door.distance,
+        canShow: () => mayUse(door),
         onPressed: () => toggle(door.id),
       });
     }
@@ -83,7 +84,17 @@ class Doors {
   }
 }
 
+// After a restart of this resource ai-core does not push the jobs again: start from its snapshot.
+try {
+  const data = core.GetPlayerData();
+  if (data) seedPlayerData(data);
+} catch (error) {
+  // ai-core starting too: its push on character load fills the jobs.
+  log.warn("ai-core's player data is not ready yet", error);
+}
+
 const doors = new Doors();
+onPlayerData("jobs", () => doors.refresh());
 doors.rebuild();
 world.onChange("doors", () => doors.rebuild());
 
