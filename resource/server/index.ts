@@ -1,14 +1,6 @@
-import {
-  AdminPanel,
-  aiLog,
-  aiLogChannels,
-  onClientCallback,
-  provideExport,
-  registerExport,
-  resourceExport,
-} from "@aicore-fivem/lib/server";
+import { AdminPanel, aiLog, aiLogChannels, GlobalGroup, onClientCallback, provideExport, registerExport, resourceExport, stateBoolean } from "@aicore-fivem/lib/server";
 import type { DataSpec, PanelSchema } from "@aicore-fivem/shared";
-import { centreOf, doorKey, EVENTS, readDoors } from "common/doors";
+import { centreOf, DOOR_PREFIX, EVENTS, readDoors } from "common/doors";
 
 const core = resourceExport("ai-core");
 
@@ -123,14 +115,14 @@ const schema: PanelSchema = {
 };
 
 const panel = new AdminPanel(schema);
+const locks = new GlobalGroup(DOOR_PREFIX, stateBoolean);
 /** Doors from the panel, parsed again after every change; a new door starts in its default state. */
 const content = { doors: readDoors(panel.get("doors")) };
 aiLogChannels({ doors: { active: false } });
 
 function seed(): void {
   for (const door of content.doors.values())
-    if (GlobalState[doorKey(door.id)] === undefined)
-      GlobalState.set(doorKey(door.id), door.locked, true);
+    if (locks.get(door.id) === undefined) locks.set(door.id, door.locked);
 }
 seed();
 panel.onChange("doors", () => {
@@ -154,8 +146,8 @@ onClientCallback(
       return { ok: false, error: "DOOR_ERR_FAR" };
     if (!mayUse(source, door.jobs))
       return { ok: false, error: "DOOR_ERR_DENIED" };
-    const locked = GlobalState[doorKey(id)] !== true;
-    GlobalState.set(doorKey(id), locked, true);
+    const locked = locks.get(id) !== true;
+    locks.set(id, locked);
     aiLog("doors", `${locked ? "locked" : "unlocked"} ${id}`, { source });
     return { ok: true, locked };
   },
@@ -164,12 +156,12 @@ onClientCallback(
 /** Exports (own and ox_doorlock's setDoorState / getDoor names). */
 const setState = (id: unknown, locked: unknown) => {
   if (typeof id === "string" && content.doors.has(id))
-    GlobalState.set(doorKey(id), locked === true || locked === 1, true);
+    locks.set(id, locked === true || locked === 1);
 };
 registerExport("SetDoorState", setState);
 registerExport(
   "IsLocked",
-  (id: unknown) => typeof id === "string" && GlobalState[doorKey(id)] === true,
+  (id: unknown) => typeof id === "string" && locks.get(id) === true,
 );
 provideExport("ox_doorlock", "setDoorState", setState);
 provideExport("ox_doorlock", "getDoor", (id: unknown) => {
@@ -178,7 +170,7 @@ provideExport("ox_doorlock", "getDoor", (id: unknown) => {
     ? {
         id: door.id,
         name: door.label,
-        state: GlobalState[doorKey(door.id)] === true ? 1 : 0,
+        state: locks.get(door.id) === true ? 1 : 0,
       }
     : null;
 });

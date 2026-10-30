@@ -1,12 +1,6 @@
-import {
-  AdminWorld,
-  loadLocaleTexts,
-  notify,
-  Points,
-  triggerServerCallback,
-} from "@aicore-fivem/lib/client";
+import { AdminWorld, GlobalGroup, loadLocaleTexts, notify, Points, stateBoolean, triggerServerCallback } from "@aicore-fivem/lib/client";
 import { Locale } from "common";
-import { centreOf, doorKey, EVENTS, readDoors, type Door } from "common/doors";
+import { centreOf, DOOR_PREFIX, EVENTS, readDoors, type Door } from "common/doors";
 
 const world = new AdminWorld(["doors"]);
 const texts = loadLocaleTexts();
@@ -27,11 +21,12 @@ async function toggle(id: string): Promise<void> {
  * Doors on this client: registered in the game's door system (so the lock holds even when the door is not streamed),
  * a point each (its label follows the lock), and the lock state from GlobalState (set at join, changes as they come).
  */
+const locks = new GlobalGroup(DOOR_PREFIX, stateBoolean);
+
 class Doors {
   private readonly points = new Points();
   private list = new Map<string, Door>();
   private registered: number[] = [];
-  private readonly locked = new Map<string, boolean>();
 
   refresh(id: string): void {
     this.points.refresh(id);
@@ -46,7 +41,7 @@ class Doors {
       if (!door.model) continue;
       this.register(`${door.id}:1`, door.model, door.coords);
       if (door.model2) this.register(`${door.id}:2`, door.model2, door.coords2);
-      this.apply(door.id, GlobalState[doorKey(door.id)] === true);
+      this.apply(door.id, locks.get(door.id) === true);
       this.point(door.id);
     }
   }
@@ -70,11 +65,10 @@ class Doors {
     this.registered.push(hash);
   }
 
-  /** Locks the door in the game's door system and keeps the state the point's label reads. */
+  /** Locks the door in the game's door system. */
   apply(id: string, locked: boolean): void {
     const door = this.list.get(id);
     if (!door) return;
-    this.locked.set(id, locked);
     for (const leaf of door.model2 ? ["1", "2"] : ["1"])
       DoorSystemSetDoorState(
         GetHashKey(`ai-doorlock:${id}:${leaf}`),
@@ -91,7 +85,7 @@ class Doors {
       coords: centreOf(door),
       label: () =>
         Locale(
-          this.locked.get(id) ? "DOOR_PROMPT_UNLOCK" : "DOOR_PROMPT_LOCK",
+          locks.get(id) ? "DOOR_PROMPT_UNLOCK" : "DOOR_PROMPT_LOCK",
           door.label,
         ),
       icon: "door-closed",
@@ -105,14 +99,7 @@ const doors = new Doors();
 doors.rebuild();
 world.onChange("doors", () => doors.rebuild());
 
-AddStateBagChangeHandler(
-  "",
-  "global",
-  (_bag: string, key: string, value: unknown) => {
-    if (!key.startsWith("door:")) return;
-    const id = key.slice(5);
-    // The bag still holds the old value inside its change handler: the label reads the value kept by apply.
-    doors.apply(id, value === true);
-    doors.refresh(id);
-  },
-);
+locks.onChange((id, locked) => {
+  doors.apply(id, locked === true);
+  doors.refresh(id);
+});

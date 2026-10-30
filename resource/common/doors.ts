@@ -7,8 +7,8 @@ export const EVENTS = {
   toggle: "ai-doorlock:toggle",
 } as const;
 
-/** GlobalState key of a door's lock (true = locked): shared state everyone needs. */
-export const doorKey = (id: string): string => `door:${id}`;
+/** GlobalState prefix of a door's lock (`door:<id>`, true = locked): shared state everyone needs. */
+export const DOOR_PREFIX = "door:";
 
 export interface Point {
   x: number;
