@@ -1,46 +1,46 @@
-import { bool, num, record, str } from "@aicore-fivem/lib/shared"
+import { bool, num, record, str } from "@aicore-fivem/lib/shared";
 
 /** ai-doorlock's contracts and panel content. No natives. */
 
 export const EVENTS = {
   /** Callback: (doorId) -> { ok, locked } lock or unlock a door the player may use. */
   toggle: "ai-doorlock:toggle",
-} as const
+} as const;
 
 /** GlobalState key of a door's lock (true = locked): shared state everyone needs. */
-export const doorKey = (id: string): string => `door:${id}`
+export const doorKey = (id: string): string => `door:${id}`;
 
 export interface Point {
-  x: number
-  y: number
-  z: number
+  x: number;
+  y: number;
+  z: number;
 }
 
 export interface Door {
-  id: string
-  label: string
-  model: string
-  coords: Point
+  id: string;
+  label: string;
+  model: string;
+  coords: Point;
   /** The second leaf of a double door (empty model = single door). */
-  model2: string
-  coords2: Point
+  model2: string;
+  coords2: Point;
   /** Locked when the server starts. */
-  locked: boolean
+  locked: boolean;
   /** Empty = anyone may lock it. */
-  jobs: string[]
+  jobs: string[];
   /** Metres from the door where the prompt shows. */
-  distance: number
+  distance: number;
 }
 
 const point = (v: unknown): Point => {
-  const c = record(v)
-  return { x: num(c.x, 0), y: num(c.y, 0), z: num(c.z, 0) }
-}
+  const c = record(v);
+  return { x: num(c.x, 0), y: num(c.y, 0), z: num(c.z, 0) };
+};
 
 export function readDoors(raw: unknown): Map<string, Door> {
-  const out = new Map<string, Door>()
+  const out = new Map<string, Door>();
   for (const [id, value] of Object.entries(record(raw))) {
-    const v = record(value)
+    const v = record(value);
     out.set(id, {
       id,
       label: str(v.label, id, 48),
@@ -53,9 +53,9 @@ export function readDoors(raw: unknown): Map<string, Door> {
         ? v.jobs.filter((j): j is string => typeof j === "string")
         : [],
       distance: num(v.distance, 2.5, 1, 15),
-    })
+    });
   }
-  return out
+  return out;
 }
 
 /** The middle of a door (both leaves of a double door). */
@@ -66,4 +66,4 @@ export const centreOf = (door: Door): Point =>
         y: (door.coords.y + door.coords2.y) / 2,
         z: (door.coords.z + door.coords2.z) / 2,
       }
-    : door.coords
+    : door.coords;
