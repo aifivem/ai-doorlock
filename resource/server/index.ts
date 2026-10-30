@@ -1,4 +1,14 @@
-import { AdminPanel, aiLog, aiLogChannels, GlobalGroup, onClientCallback, provideExport, registerExport, resourceExport, stateBoolean } from "@aicore-fivem/lib/server";
+import {
+  AdminPanel,
+  aiLog,
+  aiLogChannels,
+  GlobalGroup,
+  onClientCallback,
+  provideExport,
+  registerExport,
+  resourceExport,
+  stateBoolean,
+} from "@aicore-fivem/lib/server";
 import type { DataSpec, PanelSchema } from "@aicore-fivem/shared";
 import { centreOf, DOOR_PREFIX, EVENTS, readDoors } from "common/doors";
 

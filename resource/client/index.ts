@@ -1,6 +1,20 @@
-import { AdminWorld, GlobalGroup, loadLocaleTexts, notify, Points, stateBoolean, triggerServerCallback } from "@aicore-fivem/lib/client";
+import {
+  AdminWorld,
+  GlobalGroup,
+  loadLocaleTexts,
+  notify,
+  Points,
+  stateBoolean,
+  triggerServerCallback,
+} from "@aicore-fivem/lib/client";
 import { Locale } from "common";
-import { centreOf, DOOR_PREFIX, EVENTS, readDoors, type Door } from "common/doors";
+import {
+  centreOf,
+  DOOR_PREFIX,
+  EVENTS,
+  readDoors,
+  type Door,
+} from "common/doors";
 
 const world = new AdminWorld(["doors"]);
 const texts = loadLocaleTexts();
