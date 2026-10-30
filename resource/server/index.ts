@@ -36,6 +36,7 @@ const schema: PanelSchema = {
       desc: "ADMIN_TAB_DOORS_DESC",
       createLabel: "ADMIN_NEW_DOOR",
       deleteLabel: "ADMIN_DELETE_DOOR",
+      deleteDesc: "ADMIN_DELETE_DOOR_DESC",
       cards: [
         {
           icon: "lock",

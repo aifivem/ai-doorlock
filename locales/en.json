@@ -7,7 +7,7 @@
   "ADMIN_TAB_DOORS": "Doors",
   "ADMIN_TAB_DOORS_DESC": "Doors that lock, who may lock them and how they start.",
   "ADMIN_NEW_DOOR": "New door",
-  "ADMIN_DELETE_DOOR": "Delete this door? It stays open.",
+  "ADMIN_DELETE_DOOR": "Delete door",
   "ADMIN_C_DOOR": "Door",
   "ADMIN_C_DOOR_DESC": "One door or both leaves of a double door.",
   "ADMIN_F_LABEL": "Name",
@@ -26,5 +26,6 @@
   "ADMIN_H_JOBS": "Empty: anyone may lock and unlock. Otherwise members of these jobs.",
   "ADMIN_P_JOBS": "police",
   "ADMIN_F_DISTANCE": "Reach",
-  "ADMIN_H_DISTANCE": "How close the player must be for the prompt."
+  "ADMIN_H_DISTANCE": "How close the player must be for the prompt.",
+  "ADMIN_DELETE_DOOR_DESC": "It stays open."
 }

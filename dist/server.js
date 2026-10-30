@@ -24652,6 +24652,7 @@ const panel = new AdminPanel({
 		desc: "ADMIN_TAB_DOORS_DESC",
 		createLabel: "ADMIN_NEW_DOOR",
 		deleteLabel: "ADMIN_DELETE_DOOR",
+		deleteDesc: "ADMIN_DELETE_DOOR_DESC",
 		cards: [{
 			icon: "lock",
 			title: "ADMIN_C_DOOR",
