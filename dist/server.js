@@ -274,7 +274,7 @@ function toPatch(value) {
 		default: return null;
 	}
 }
-const clone = (value) => value === void 0 ? value : JSON.parse(JSON.stringify(value)), core$8 = resourceExport(CORE.resource), ERR = {
+const clone = (value) => value === void 0 ? value : JSON.parse(JSON.stringify(value)), core$9 = resourceExport(CORE.resource), ERR = {
 	type: "ADMIN_ERR_TYPE",
 	range: "ADMIN_ERR_RANGE",
 	length: "ADMIN_ERR_LENGTH",
@@ -288,7 +288,7 @@ const clone = (value) => value === void 0 ? value : JSON.parse(JSON.stringify(va
 		if (cached && Date.now() - cached.at < 2e3) return cached.values.size > 0 ? cached.values : null;
 		let list = [];
 		try {
-			list = core$8.GetLookupValues(source);
+			list = core$9.GetLookupValues(source);
 		} catch {}
 		let values = new Set(Array.isArray(list) ? list.filter((v) => typeof v == "string") : []);
 		return this.lists.set(source, {
@@ -490,7 +490,7 @@ function writeSchema(resource, name, text, log) {
 	(0, node_fs_promises.mkdir)(dir, { recursive: !0 }).then(() => (0, node_fs_promises.writeFile)(`${dir}/${name}.schema.json`, text, "utf8")).catch((error) => log.error(`writing ${resource}/${path} failed`, error));
 }
 // ../../../packages/lib/src/server/admin/panel.ts
-const core$7 = resourceExport(CORE.resource), DEFAULT_KEY = "^[a-z0-9_]{2,32}$";
+const core$8 = resourceExport(CORE.resource), DEFAULT_KEY = "^[a-z0-9_]{2,32}$";
 function imported(spec, value) {
 	let base = clone(spec.newRecord ?? {}), out = {};
 	for (let name of Object.keys(spec.sections)) {
@@ -511,7 +511,7 @@ var AdminPanel = class {
 	constructor(schema) {
 		this.schema = schema;
 		for (let [name, spec] of Object.entries(schema.files)) this.load(name, spec);
-		registerExport("AdminPanelSnapshot", () => this.snapshot()), registerExport("AdminPanelApply", (admin, patch) => this.apply(admin, patch)), onClientCallback(ADMIN.worldChangesCallback(this.resource), () => Object.fromEntries(this.worldChanges)), setImmediate(() => core$7.RegisterAdminPanel(this.resource));
+		registerExport("AdminPanelSnapshot", () => this.snapshot()), registerExport("AdminPanelApply", (admin, patch) => this.apply(admin, patch)), onClientCallback(ADMIN.worldChangesCallback(this.resource), () => Object.fromEntries(this.worldChanges)), setImmediate(() => core$8.RegisterAdminPanel(this.resource));
 	}
 	get(file) {
 		return this.data.get(file) ?? {};
@@ -604,7 +604,7 @@ var AdminPanel = class {
 		let spec = this.schema.files[file], data = this.get(file), value = key === void 0 ? data : data[key] ?? null;
 		this.dataFiles.get(file)?.write(data);
 		for (let handler of this.handlers.get(file) ?? []) handler(key, value);
-		if (core$7.AdminPanelChanged({
+		if (core$8.AdminPanelChanged({
 			resource: this.resource,
 			file,
 			key,
@@ -634,7 +634,7 @@ function aiLogChannels(channels) {
 }
 resourceExport(CORE.resource);
 // ../../../packages/lib/src/server/online.ts
-const core$5 = resourceExport(CORE.resource);
+const core$6 = resourceExport(CORE.resource);
 var OnlinePlayers = class {
 	players = new Map();
 	onDuty = new Map();
@@ -643,7 +643,7 @@ var OnlinePlayers = class {
 		if (this.started) return;
 		this.started = !0;
 		let load = (source, character) => {
-			this.put(source, character, (core$5.GetJobs(source) ?? []).map((m) => m.job), (core$5.GetGangs(source) ?? []).map((m) => m.gang)), this.setDuty(source, core$5.GetDutyJob(source));
+			this.put(source, character, (core$6.GetJobs(source) ?? []).map((m) => m.job), (core$6.GetGangs(source) ?? []).map((m) => m.gang)), this.setDuty(source, core$6.GetDutyJob(source));
 		};
 		on(CORE.playerLoadedEvent, load), on(CORE.playerUnloadedEvent, (source) => this.drop(source)), on(CORE.jobsChangedEvent, (source, jobs) => {
 			let player = this.players.get(source);
@@ -652,8 +652,8 @@ var OnlinePlayers = class {
 			let player = this.players.get(source);
 			player && (player.gangs = gangs.map((m) => m.gang));
 		}), on(CORE.dutyChangedEvent, (source, job) => this.setDuty(source, job));
-		for (let source of core$5.GetLoadedSources()) {
-			let character = core$5.GetCharacter(source);
+		for (let source of core$6.GetLoadedSources()) {
+			let character = core$6.GetCharacter(source);
 			character && load(source, character);
 		}
 	}
@@ -782,27 +782,37 @@ var GlobalGroup$1 = class extends Mirror {
 		GlobalState.set(this.prefix + id, value ?? null, !0), this.put(id, value);
 	}
 };
-resourceExport(CORE.resource), resourceExport(CORE.resource);
+resourceExport(CORE.resource), resourceExport(CORE.resource), resourceExport(CORE.resource);
 // resource/common/doors.ts
-const EVENTS = { toggle: "ai-doorlock:toggle" }, point$1 = (v) => {
+const EVENTS = { toggle: "ai-doorlock:toggle" }, DOOR_TYPES = [
+	"single",
+	"double",
+	"sliding",
+	"doubleSliding",
+	"garage"
+], isDouble = (type) => type === "double" || type === "doubleSliding", point = (v) => {
 	let c = record(v);
 	return {
 		x: num(c.x, 0),
 		y: num(c.y, 0),
 		z: num(c.z, 0)
 	};
-};
+}, leaf$1 = (v) => {
+	let l = record(v), model = str(l.model, "", 64);
+	return model ? {
+		model,
+		coords: point(l.coords)
+	} : null;
+}, doorType = (v) => DOOR_TYPES.find((t) => t === v) ?? "single";
 function readDoors(raw) {
 	let out = new Map();
 	for (let [id, value] of Object.entries(record(raw))) {
-		let v = record(value);
+		let v = record(value), type = doorType(v.type), picked = isDouble(type) ? [v.door, v.door2] : [v.door];
 		out.set(id, {
 			id,
 			label: str(v.label, id, 48),
-			model: str(v.model, "", 64),
-			coords: point$1(v.coords),
-			model2: str(v.model2, "", 64),
-			coords2: point$1(v.coords2),
+			type,
+			leaves: picked.map(leaf$1).filter((l) => l !== null),
 			locked: bool(v.locked, !0),
 			jobs: Array.isArray(v.jobs) ? v.jobs.filter((j) => typeof j == "string") : [],
 			distance: num(v.distance, 2.5, 1, 15)
@@ -810,11 +820,33 @@ function readDoors(raw) {
 	}
 	return out;
 }
-const centreOf = (door) => door.model2 ? {
-	x: (door.coords.x + door.coords2.x) / 2,
-	y: (door.coords.y + door.coords2.y) / 2,
-	z: (door.coords.z + door.coords2.z) / 2
-} : door.coords, core = resourceExport("ai-core"), point = { type: "vec3" }, panel = new AdminPanel({
+function centreOf(door) {
+	let [a, b] = door.leaves;
+	return a ? b ? {
+		x: (a.coords.x + b.coords.x) / 2,
+		y: (a.coords.y + b.coords.y) / 2,
+		z: (a.coords.z + b.coords.z) / 2
+	} : a.coords : null;
+}
+// resource/server/schema.ts
+const leaf = {
+	type: "object",
+	fields: {
+		model: {
+			type: "text",
+			min: 0,
+			max: 64
+		},
+		coords: { type: "vec3" }
+	}
+}, unpicked = {
+	model: "",
+	coords: {
+		x: 0,
+		y: 0,
+		z: 0
+	}
+}, schema = {
 	title: "ADMIN_TITLE",
 	icon: "lock",
 	files: { doors: {
@@ -823,18 +855,9 @@ const centreOf = (door) => door.model2 ? {
 		labelPath: "label",
 		newRecord: {
 			label: "",
-			model: "",
-			coords: {
-				x: 0,
-				y: 0,
-				z: 0
-			},
-			model2: "",
-			coords2: {
-				x: 0,
-				y: 0,
-				z: 0
-			},
+			type: "single",
+			door: unpicked,
+			door2: unpicked,
 			locked: !0,
 			jobs: [],
 			distance: 2.5
@@ -845,21 +868,16 @@ const centreOf = (door) => door.model2 ? {
 				min: 1,
 				max: 48
 			},
-			model: {
-				type: "text",
-				min: 2,
-				max: 64
+			type: {
+				type: "enum",
+				values: [...DOOR_TYPES]
 			},
-			coords: point,
-			model2: {
-				type: "text",
-				min: 0,
-				max: 64
-			},
-			coords2: point,
+			door: leaf,
+			door2: leaf,
 			locked: { type: "bool" },
 			jobs: {
 				type: "names",
+				lookup: "job",
 				max: 20,
 				itemMax: 32,
 				pattern: "^[a-z0-9_]{2,32}$"
@@ -892,27 +910,57 @@ const centreOf = (door) => door.model2 ? {
 					placeholder: "ADMIN_P_LABEL"
 				},
 				{
-					widget: "entity",
-					path: "coords",
-					modelPath: "model",
-					label: "ADMIN_F_COORDS",
-					hint: "ADMIN_H_COORDS"
+					widget: "select",
+					path: "type",
+					label: "ADMIN_F_TYPE",
+					hint: "ADMIN_H_TYPE",
+					options: [
+						{
+							value: "single",
+							label: "ADMIN_TYPE_SINGLE"
+						},
+						{
+							value: "double",
+							label: "ADMIN_TYPE_DOUBLE"
+						},
+						{
+							value: "sliding",
+							label: "ADMIN_TYPE_SLIDING"
+						},
+						{
+							value: "doubleSliding",
+							label: "ADMIN_TYPE_DOUBLE_SLIDING"
+						},
+						{
+							value: "garage",
+							label: "ADMIN_TYPE_GARAGE"
+						}
+					]
 				},
 				{
-					widget: "model",
-					kind: "object",
-					path: "model",
-					label: "ADMIN_F_MODEL",
-					hint: "ADMIN_H_MODEL",
-					placeholder: "ADMIN_P_MODEL"
+					widget: "entity",
+					path: "door.coords",
+					modelPath: "door.model",
+					label: "ADMIN_F_DOOR",
+					hint: "ADMIN_H_DOOR"
 				},
 				{
 					widget: "entity",
-					path: "coords2",
-					modelPath: "model2",
-					label: "ADMIN_F_COORDS2",
-					hint: "ADMIN_H_MODEL2"
-				},
+					path: "door2.coords",
+					modelPath: "door2.model",
+					label: "ADMIN_F_DOOR2",
+					hint: "ADMIN_H_DOOR2",
+					showIf: {
+						path: "type",
+						values: ["double", "doubleSliding"]
+					}
+				}
+			]
+		}, {
+			icon: "key",
+			title: "ADMIN_C_ACCESS",
+			desc: "ADMIN_C_ACCESS_DESC",
+			fields: [
 				{
 					widget: "switch",
 					path: "locked",
@@ -922,6 +970,7 @@ const centreOf = (door) => door.model2 ? {
 				{
 					widget: "tags",
 					path: "jobs",
+					lookup: "job",
 					label: "ADMIN_F_JOBS",
 					hint: "ADMIN_H_JOBS",
 					placeholder: "ADMIN_P_JOBS"
@@ -939,7 +988,32 @@ const centreOf = (door) => door.model2 ? {
 			]
 		}]
 	}]
-}), locks = new GlobalGroup("door:", stateBoolean), content = { doors: readDoors(panel.get("doors")) };
+}, core = resourceExport("ai-core"), panel = new AdminPanel(schema);
+function upgradeOldDoors() {
+	for (let [id, value] of Object.entries(panel.get("doors"))) {
+		let v = record(value);
+		if (typeof v.model != "string" || "door" in v) continue;
+		let { model, coords, model2, coords2, ...rest } = v, second = typeof model2 == "string" && model2 !== "", none = {
+			x: 0,
+			y: 0,
+			z: 0
+		};
+		panel.commit("doors", id, {
+			...rest,
+			type: second ? "double" : "single",
+			door: {
+				model,
+				coords: coords ?? none
+			},
+			door2: {
+				model: second ? model2 : "",
+				coords: coords2 ?? none
+			}
+		});
+	}
+}
+upgradeOldDoors();
+const locks = new GlobalGroup("door:", stateBoolean), content = { doors: readDoors(panel.get("doors")) };
 aiLogChannels({ doors: { active: !1 } });
 function seed() {
 	for (let door of content.doors.values()) locks.get(door.id) === void 0 && locks.set(door.id, door.locked);
@@ -958,7 +1032,7 @@ onClientCallback(EVENTS.toggle, {
 		error: "DOOR_ERR_FAR"
 	};
 	let [x = 0, y = 0, z = 0] = GetEntityCoords(GetPlayerPed(String(source))), c = centreOf(door);
-	if (Math.hypot(x - c.x, y - c.y, z - c.z) > door.distance + 1.5) return {
+	if (!c || Math.hypot(x - c.x, y - c.y, z - c.z) > door.distance + 1.5) return {
 		ok: !1,
 		error: "DOOR_ERR_FAR"
 	};

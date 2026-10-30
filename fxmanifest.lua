@@ -1,5 +1,5 @@
 name 'ai-doorlock'
-author 'ai-core'
+author 'TGIANN'
 version '0.1.0'
 license 'GPL-3.0-only'
 description 'Door locks: doors from the admin panel, job access, synced lock state'

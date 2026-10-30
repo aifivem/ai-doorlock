@@ -10,20 +10,46 @@ export const EVENTS = {
 /** GlobalState prefix of a door's lock (`door:<id>`, true = locked): shared state everyone needs. */
 export const DOOR_PREFIX = "door:";
 
+/**
+ * What a door is; decides how many objects it has and how it locks:
+ * swinging doors lock once they have swung shut, sliding doors and gates lock at once,
+ * garage doors and barriers are driven by the game (their speed is never touched).
+ */
+export const DOOR_TYPES = [
+  "single",
+  "double",
+  "sliding",
+  "doubleSliding",
+  "garage",
+] as const;
+export type DoorType = (typeof DOOR_TYPES)[number];
+
+/** Types made of two objects (the second at `door2`). */
+export const isDouble = (type: DoorType): boolean =>
+  type === "double" || type === "doubleSliding";
+/** Types that swing on hinges (locked only once shut). */
+export const isSwinging = (type: DoorType): boolean =>
+  type === "single" || type === "double";
+
 export interface Point {
   x: number;
   y: number;
   z: number;
 }
 
+/** One door object in the world, found by its model and position. */
+export interface Leaf {
+  /** Model name, or the unsigned hash as digits when the game has no name for it. */
+  model: string;
+  coords: Point;
+}
+
 export interface Door {
   id: string;
   label: string;
-  model: string;
-  coords: Point;
-  /** The second leaf of a double door (empty model = single door). */
-  model2: string;
-  coords2: Point;
+  type: DoorType;
+  /** The picked objects of this type: one, or two for a double type (unpicked ones are left out). */
+  leaves: Leaf[];
   /** Locked when the server starts. */
   locked: boolean;
   /** Empty = anyone may lock it. */
@@ -37,17 +63,26 @@ const point = (v: unknown): Point => {
   return { x: num(c.x, 0), y: num(c.y, 0), z: num(c.z, 0) };
 };
 
+const leaf = (v: unknown): Leaf | null => {
+  const l = record(v);
+  const model = str(l.model, "", 64);
+  return model ? { model, coords: point(l.coords) } : null;
+};
+
+const doorType = (v: unknown): DoorType =>
+  DOOR_TYPES.find((t) => t === v) ?? "single";
+
 export function readDoors(raw: unknown): Map<string, Door> {
   const out = new Map<string, Door>();
   for (const [id, value] of Object.entries(record(raw))) {
     const v = record(value);
+    const type = doorType(v.type);
+    const picked = isDouble(type) ? [v.door, v.door2] : [v.door];
     out.set(id, {
       id,
       label: str(v.label, id, 48),
-      model: str(v.model, "", 64),
-      coords: point(v.coords),
-      model2: str(v.model2, "", 64),
-      coords2: point(v.coords2),
+      type,
+      leaves: picked.map(leaf).filter((l): l is Leaf => l !== null),
       locked: bool(v.locked, true),
       jobs: Array.isArray(v.jobs)
         ? v.jobs.filter((j): j is string => typeof j === "string")
@@ -58,12 +93,14 @@ export function readDoors(raw: unknown): Map<string, Door> {
   return out;
 }
 
-/** The middle of a door (both leaves of a double door). */
-export const centreOf = (door: Door): Point =>
-  door.model2
-    ? {
-        x: (door.coords.x + door.coords2.x) / 2,
-        y: (door.coords.y + door.coords2.y) / 2,
-        z: (door.coords.z + door.coords2.z) / 2,
-      }
-    : door.coords;
+/** The middle of a door (between both objects of a double door); null before an object is picked. */
+export function centreOf(door: Door): Point | null {
+  const [a, b] = door.leaves;
+  if (!a) return null;
+  if (!b) return a.coords;
+  return {
+    x: (a.coords.x + b.coords.x) / 2,
+    y: (a.coords.y + b.coords.y) / 2,
+    z: (a.coords.z + b.coords.z) / 2,
+  };
+}

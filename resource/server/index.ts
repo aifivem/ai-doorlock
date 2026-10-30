@@ -9,123 +9,32 @@ import {
   resourceExport,
   stateBoolean,
 } from "@aicore-fivem/lib/server";
-import type { DataSpec, PanelSchema } from "@aicore-fivem/shared";
+import { record } from "@aicore-fivem/lib/shared";
 import { centreOf, DOOR_PREFIX, EVENTS, readDoors } from "common/doors";
+import { schema } from "./schema";
 
 const core = resourceExport("ai-core");
 
-const point: DataSpec = { type: "vec3" };
-/** ai-doorlock's panel: one record per door (a double door has a second leaf). */
-const schema: PanelSchema = {
-  title: "ADMIN_TITLE",
-  icon: "lock",
-  files: {
-    doors: {
-      kind: "records",
-      sync: "all",
-      labelPath: "label",
-      newRecord: {
-        label: "",
-        model: "",
-        coords: { x: 0, y: 0, z: 0 },
-        model2: "",
-        coords2: { x: 0, y: 0, z: 0 },
-        locked: true,
-        jobs: [],
-        distance: 2.5,
-      },
-      sections: {
-        label: { type: "text", min: 1, max: 48 },
-        model: { type: "text", min: 2, max: 64 },
-        coords: point,
-        model2: { type: "text", min: 0, max: 64 },
-        coords2: point,
-        locked: { type: "bool" },
-        jobs: {
-          type: "names",
-          max: 20,
-          itemMax: 32,
-          pattern: "^[a-z0-9_]{2,32}$",
-        },
-        distance: { type: "number", min: 1, max: 15 },
-      },
-    },
-  },
-  tabs: [
-    {
-      id: "doors",
-      file: "doors",
-      icon: "lock",
-      label: "ADMIN_TAB_DOORS",
-      desc: "ADMIN_TAB_DOORS_DESC",
-      createLabel: "ADMIN_NEW_DOOR",
-      deleteLabel: "ADMIN_DELETE_DOOR",
-      deleteDesc: "ADMIN_DELETE_DOOR_DESC",
-      cards: [
-        {
-          icon: "lock",
-          title: "ADMIN_C_DOOR",
-          desc: "ADMIN_C_DOOR_DESC",
-          fields: [
-            {
-              widget: "text",
-              path: "label",
-              label: "ADMIN_F_LABEL",
-              placeholder: "ADMIN_P_LABEL",
-            },
-            {
-              widget: "entity",
-              path: "coords",
-              modelPath: "model",
-              label: "ADMIN_F_COORDS",
-              hint: "ADMIN_H_COORDS",
-            },
-            {
-              widget: "model",
-              kind: "object",
-              path: "model",
-              label: "ADMIN_F_MODEL",
-              hint: "ADMIN_H_MODEL",
-              placeholder: "ADMIN_P_MODEL",
-            },
-            {
-              widget: "entity",
-              path: "coords2",
-              modelPath: "model2",
-              label: "ADMIN_F_COORDS2",
-              hint: "ADMIN_H_MODEL2",
-            },
-            {
-              widget: "switch",
-              path: "locked",
-              label: "ADMIN_F_LOCKED",
-              hint: "ADMIN_H_LOCKED",
-            },
-            {
-              widget: "tags",
-              path: "jobs",
-              label: "ADMIN_F_JOBS",
-              hint: "ADMIN_H_JOBS",
-              placeholder: "ADMIN_P_JOBS",
-            },
-            {
-              widget: "number",
-              path: "distance",
-              label: "ADMIN_F_DISTANCE",
-              hint: "ADMIN_H_DISTANCE",
-              min: 1,
-              max: 15,
-              step: 0.5,
-              unit: "m",
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
-
 const panel = new AdminPanel(schema);
+
+/** Doors saved before door types (`model`/`coords`/`model2`/`coords2`) move to `type` + `door`/`door2`. */
+function upgradeOldDoors(): void {
+  for (const [id, value] of Object.entries(panel.get("doors"))) {
+    const v = record(value);
+    if (typeof v.model !== "string" || "door" in v) continue;
+    const { model, coords, model2, coords2, ...rest } = v;
+    const second = typeof model2 === "string" && model2 !== "";
+    const none = { x: 0, y: 0, z: 0 };
+    panel.commit("doors", id, {
+      ...rest,
+      type: second ? "double" : "single",
+      door: { model, coords: coords ?? none },
+      door2: { model: second ? model2 : "", coords: coords2 ?? none },
+    });
+  }
+}
+upgradeOldDoors();
+
 const locks = new GlobalGroup(DOOR_PREFIX, stateBoolean);
 /** Doors from the panel, parsed again after every change; a new door starts in its default state. */
 const content = { doors: readDoors(panel.get("doors")) };
@@ -153,7 +62,7 @@ onClientCallback(
     if (!door) return { ok: false, error: "DOOR_ERR_FAR" };
     const [x = 0, y = 0, z = 0] = GetEntityCoords(GetPlayerPed(String(source)));
     const c = centreOf(door);
-    if (Math.hypot(x - c.x, y - c.y, z - c.z) > door.distance + 1.5)
+    if (!c || Math.hypot(x - c.x, y - c.y, z - c.z) > door.distance + 1.5)
       return { ok: false, error: "DOOR_ERR_FAR" };
     if (!mayUse(source, door.jobs))
       return { ok: false, error: "DOOR_ERR_DENIED" };

@@ -5,7 +5,7 @@
   "description": "Door locks: doors from the admin panel, job access, synced lock state",
   "license": "GPL-3.0-only",
   "author": {
-    "name": "ai-core"
+    "name": "TGIANN"
   },
   "repository": "github:TGIANN/ai-doorlock",
   "type": "module",

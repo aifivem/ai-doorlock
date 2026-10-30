@@ -18,56 +18,83 @@
           "minLength": 1,
           "maxLength": 48
         },
-        "model": {
-          "description": "Door model: The GTA model name of the door (a tool like CodeWalker or a model viewer shows it).",
-          "type": "string",
-          "minLength": 2,
-          "maxLength": 64
+        "type": {
+          "description": "Door type: Decides how many door objects you pick and how the door locks: swinging doors lock once they are shut, sliding doors and gates lock at once, garage doors and barriers keep the game's own movement.",
+          "enum": [
+            "single",
+            "double",
+            "sliding",
+            "doubleSliding",
+            "garage"
+          ]
         },
-        "coords": {
-          "description": "Door position: Pick the door in the world with the free camera (it is outlined when aimed at): its model and exact position are filled in.",
+        "door": {
           "type": "object",
-          "required": [
-            "x",
-            "y",
-            "z"
-          ],
           "properties": {
-            "x": {
-              "type": "number"
+            "model": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 64
             },
-            "y": {
-              "type": "number"
-            },
-            "z": {
-              "type": "number"
+            "coords": {
+              "description": "Door: Pick the door in the world with the free camera (it is outlined when aimed at): its model and exact position are filled in. For a double door, one of the two leaves.",
+              "type": "object",
+              "required": [
+                "x",
+                "y",
+                "z"
+              ],
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "z": {
+                  "type": "number"
+                }
+              }
             }
-          }
+          },
+          "required": [
+            "model",
+            "coords"
+          ]
         },
-        "model2": {
-          "type": "string",
-          "minLength": 0,
-          "maxLength": 64
-        },
-        "coords2": {
-          "description": "Second leaf position: Only for double doors: pick the second leaf the same way; empty for a single door.",
+        "door2": {
           "type": "object",
-          "required": [
-            "x",
-            "y",
-            "z"
-          ],
           "properties": {
-            "x": {
-              "type": "number"
+            "model": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 64
             },
-            "y": {
-              "type": "number"
-            },
-            "z": {
-              "type": "number"
+            "coords": {
+              "description": "Second door: Only for a double door or a double sliding door: pick the other leaf the same way. Other door types ignore it.",
+              "type": "object",
+              "required": [
+                "x",
+                "y",
+                "z"
+              ],
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "z": {
+                  "type": "number"
+                }
+              }
             }
-          }
+          },
+          "required": [
+            "model",
+            "coords"
+          ]
         },
         "locked": {
           "description": "Locked at start: The state after a server restart.",
@@ -85,7 +112,7 @@
           }
         },
         "distance": {
-          "description": "Reach: How close the player must be for the prompt.",
+          "description": "Reach: How close the player must be for the prompt. Gates and garage doors need more.",
           "type": "number",
           "minimum": 1,
           "maximum": 15
@@ -93,10 +120,9 @@
       },
       "required": [
         "label",
-        "model",
-        "coords",
-        "model2",
-        "coords2",
+        "type",
+        "door",
+        "door2",
         "locked",
         "jobs",
         "distance"

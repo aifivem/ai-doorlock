@@ -12,9 +12,11 @@ import {
   centreOf,
   DOOR_PREFIX,
   EVENTS,
+  isSwinging,
   readDoors,
   type Door,
 } from "common/doors";
+import { DoorSystem } from "./doorSystem";
 
 const world = new AdminWorld(["doors"]);
 const texts = loadLocaleTexts();
@@ -39,73 +41,45 @@ const locks = new GlobalGroup(DOOR_PREFIX, stateBoolean);
 
 class Doors {
   private readonly points = new Points();
+  private readonly system = new DoorSystem();
   private list = new Map<string, Door>();
-  private registered: number[] = [];
 
   refresh(id: string): void {
     this.points.refresh(id);
   }
 
   rebuild(): void {
-    for (const hash of this.registered) RemoveDoorFromSystem(hash);
-    this.registered = [];
+    this.system.clear();
     this.points.clear();
     this.list = readDoors(world.get("doors"));
     for (const door of this.list.values()) {
-      if (!door.model) continue;
-      this.register(`${door.id}:1`, door.model, door.coords);
-      if (door.model2) this.register(`${door.id}:2`, door.model2, door.coords2);
+      const centre = centreOf(door);
+      if (!centre) continue;
+      door.leaves.forEach((leaf, i) =>
+        this.system.add(`${door.id}:${i + 1}`, leaf, door.type),
+      );
       this.apply(door.id, locks.get(door.id) === true);
-      this.point(door.id);
+      this.points.add(door.id, {
+        coords: centre,
+        label: () =>
+          Locale(
+            locks.get(door.id) ? "DOOR_PROMPT_UNLOCK" : "DOOR_PROMPT_LOCK",
+            door.label,
+          ),
+        icon: "door-closed",
+        radius: door.distance,
+        onPressed: () => toggle(door.id),
+      });
     }
   }
 
-  private register(
-    name: string,
-    model: string,
-    at: { x: number; y: number; z: number },
-  ): void {
-    const hash = GetHashKey(`ai-doorlock:${name}`);
-    AddDoorToSystem(
-      hash,
-      GetHashKey(model),
-      at.x,
-      at.y,
-      at.z,
-      false,
-      false,
-      false,
-    );
-    this.registered.push(hash);
-  }
-
-  /** Locks the door in the game's door system. */
+  /** Locks or unlocks every object of the door the way its type locks. */
   apply(id: string, locked: boolean): void {
     const door = this.list.get(id);
     if (!door) return;
-    for (const leaf of door.model2 ? ["1", "2"] : ["1"])
-      DoorSystemSetDoorState(
-        GetHashKey(`ai-doorlock:${id}:${leaf}`),
-        locked ? 1 : 0,
-        false,
-        false,
-      );
-  }
-
-  private point(id: string): void {
-    const door = this.list.get(id);
-    if (!door?.model) return;
-    this.points.add(id, {
-      coords: centreOf(door),
-      label: () =>
-        Locale(
-          locks.get(id) ? "DOOR_PROMPT_UNLOCK" : "DOOR_PROMPT_LOCK",
-          door.label,
-        ),
-      icon: "door-closed",
-      radius: door.distance,
-      onPressed: () => toggle(id),
-    });
+    door.leaves.forEach((_, i) =>
+      this.system.setLocked(`${id}:${i + 1}`, locked, isSwinging(door.type)),
+    );
   }
 }
 
