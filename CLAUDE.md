@@ -21,7 +21,7 @@ Door locks from the admin panel: door types (single, double, sliding, double sli
 
 ## Pitfalls
 
-- ai-core's panel has no field shown only for some values of another, so "Second door" shows for every type (its hint says when it counts).
-- ai-core's `entity` widget has no teleport button yet: the owner cannot teleport to a door from the panel until ai-core adds one.
+- "Second door" shows only for the double types (`showIf` on the `door2` widget).
+- The panel's `entity` widget has a teleport button that stands the admin on the floor at the door.
 - A panel change removes every door from the door system and adds them back in the same frame; tgiann-doorlock found that a re-add in the same frame sometimes leaves a door unregistered (it waits a few frames). Not seen here yet.
-- The Jobs field is free names without `lookup: "job"`.
+- The Jobs field picks from the job list (`lookup: "job"`).
