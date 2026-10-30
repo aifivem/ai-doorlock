@@ -1,6 +1,6 @@
 # ai-doorlock
 
-Door locks from the admin panel: single and double doors, job access, the lock state shared with everyone. Depends on ai-core (jobs, prompts, admin panel). Research and decisions: `docs/research/ai-doorlock.md`.
+Door locks from the admin panel: single and double doors, job access, the lock state shared with everyone. Depends on ai-core (jobs, prompts, admin panel).
 
 ## Decisions
 
