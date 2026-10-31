@@ -29,9 +29,6 @@
   "ADMIN_C_ACCESS_DESC": "Who may lock and unlock it, and how it starts.",
   "ADMIN_F_LOCKED": "Locked at start",
   "ADMIN_H_LOCKED": "The state after a server restart.",
-  "ADMIN_F_JOBS": "Jobs",
-  "ADMIN_H_JOBS": "Empty: anyone may lock and unlock. Otherwise members of these jobs.",
-  "ADMIN_P_JOBS": "police",
   "ADMIN_F_DISTANCE": "Reach",
   "ADMIN_H_DISTANCE": "How close the player must be for the prompt. Gates and garage doors need more."
 }

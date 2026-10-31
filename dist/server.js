@@ -55,7 +55,61 @@ const oneArg = (read) => ([value]) => {
 }, fail = (error) => ({
 	ok: !1,
 	error
-}), isObject = (value) => typeof value == "object" && !!value && !Array.isArray(value);
+}), names = (v) => Array.isArray(v) ? v.filter((x) => typeof x == "string") : [];
+function readAccess(value) {
+	let v = record(value), grades = {};
+	for (let [name, grade] of Object.entries(record(v.grades))) typeof grade == "number" && Number.isInteger(grade) && grade >= 0 && (grades[name] = grade);
+	return {
+		jobs: names(v.jobs),
+		gangs: names(v.gangs),
+		grades,
+		onDuty: bool(v.onDuty, !1)
+	};
+}
+const isPublic = (rule) => rule.jobs.length === 0 && rule.gangs.length === 0, ACCESS_FIELDS = {
+	jobs: {
+		type: "names",
+		lookup: "job",
+		optional: !0
+	},
+	gangs: {
+		type: "names",
+		lookup: "gang",
+		optional: !0
+	},
+	onDuty: {
+		type: "bool",
+		optional: !0
+	}
+};
+function accessFields() {
+	return [
+		{
+			widget: "tags",
+			lookup: "job",
+			path: "jobs",
+			label: "ADMIN_F_ACCESS_JOBS",
+			hint: "ADMIN_H_ACCESS_JOBS",
+			placeholder: "ADMIN_P_ACCESS_JOBS"
+		},
+		{
+			widget: "tags",
+			lookup: "gang",
+			path: "gangs",
+			label: "ADMIN_F_ACCESS_GANGS",
+			hint: "ADMIN_H_ACCESS_GANGS",
+			placeholder: "ADMIN_P_ACCESS_GANGS"
+		},
+		{
+			widget: "switch",
+			path: "onDuty",
+			label: "ADMIN_F_ACCESS_ON_DUTY",
+			hint: "ADMIN_H_ACCESS_ON_DUTY"
+		}
+	];
+}
+// ../../../packages/lib/src/shared/records.ts
+const isObject = (value) => typeof value == "object" && !!value && !Array.isArray(value);
 function readRecords(raw, readOne) {
 	let out = new Map();
 	if (!isObject(raw)) return out;
@@ -102,6 +156,28 @@ var FileViews = class {
 		if (key === void 0) return this.reset(whole);
 		let parsed = isObject(value) ? this.readOne(key, value) : null;
 		parsed === null ? this.map.delete(key) : this.map.set(key, parsed);
+	}
+}, RecordObjects = class {
+	build;
+	records;
+	built = new Map();
+	constructor(source, file, readOne, build) {
+		this.build = build, this.records = source.records(file, readOne), source.onChange(file, (key) => key === void 0 ? this.rebuildAll() : this.rebuild(key)), this.rebuildAll();
+	}
+	rebuild(key) {
+		this.built.get(key)?.(), this.built.delete(key);
+		let record = this.records.get(key);
+		if (record === void 0) return;
+		let remove = this.build(key, record);
+		remove && this.built.set(key, remove);
+	}
+	rebuildAll() {
+		for (let remove of this.built.values()) remove();
+		this.built.clear();
+		for (let [key, record] of this.records) {
+			let remove = this.build(key, record);
+			remove && this.built.set(key, remove);
+		}
 	}
 };
 // ../../../packages/lib/src/shared/index.ts
@@ -236,6 +312,7 @@ const CORE = {
 }, ADMIN = {
 	ace: "ai.admin",
 	openCallback: "ai-core:admin:open",
+	panelDataCallback: "ai-core:admin:panelData",
 	applyCallback: "ai-core:admin:apply",
 	closeEvent: "ai-core:admin:close",
 	showEvent: "ai-core:admin:show",
@@ -689,7 +766,7 @@ var AdminPanel = class {
 	constructor(schema) {
 		this.schema = schema;
 		for (let [name, spec] of Object.entries(schema.files)) this.load(name, spec);
-		registerExport("AdminPanelSnapshot", () => this.snapshot()), registerExport("AdminPanelApply", (admin, patch) => this.apply(admin, patch)), onClientCallback(ADMIN.worldChangesCallback(this.resource), () => Object.fromEntries(this.worldChanges), { rate: {
+		registerExport("AdminPanelSnapshot", () => this.snapshot()), registerExport("AdminPanelSummary", () => this.summary()), registerExport("AdminPanelApply", (admin, patch) => this.apply(admin, patch)), onClientCallback(ADMIN.worldChangesCallback(this.resource), () => Object.fromEntries(this.worldChanges), { rate: {
 			count: 4,
 			windowMs: 1e4
 		} }), setImmediate(() => core$14.RegisterAdminPanel(this.resource));
@@ -718,6 +795,27 @@ var AdminPanel = class {
 			schema: this.schema,
 			texts: loadLocaleTexts(),
 			data: clone(Object.fromEntries(this.data))
+		};
+	}
+	summary() {
+		let data = {}, index = {};
+		for (let [file, spec] of Object.entries(this.schema.files)) {
+			let content = this.data.get(file);
+			if (spec.kind !== "records") {
+				data[file] = clone(content ?? {});
+				continue;
+			}
+			let labels = {};
+			for (let [key, record] of Object.entries(content ?? {})) labels[key] = labelOf(record, spec.labelPath) ?? key;
+			index[file] = labels;
+		}
+		return {
+			resource: this.resource,
+			schema: this.schema,
+			texts: loadLocaleTexts(),
+			data,
+			loaded: !1,
+			index
 		};
 	}
 	apply(admin, raw) {
@@ -803,6 +901,15 @@ var AdminPanel = class {
 		this.data.set(name, data), (filled || raw === null || !file.hasSchemaRef()) && file.write(data);
 	}
 };
+function labelOf(record, path) {
+	if (!path) return null;
+	let at = record;
+	for (let part of path.split(".")) {
+		if (typeof at != "object" || !at) return null;
+		at = at[part];
+	}
+	return typeof at == "string" && at !== "" ? at : null;
+}
 // ../../../packages/lib/src/server/log.ts
 function aiLog(channel, message, options) {
 	optionalExport("ai-core")?.Log(channel, message, options);
@@ -912,6 +1019,20 @@ var OnlinePlayers = class {
 	onDutyIn(source, jobs) {
 		let duty = this.dutyJob(source);
 		return duty !== null && jobs.includes(duty);
+	}
+	allows(source, rule) {
+		if (isPublic(rule)) return !0;
+		let min = (name) => rule.grades[name] ?? 0;
+		for (let gang of rule.gangs) {
+			let grade = this.gangGrade(source, gang);
+			if (grade !== null && grade >= min(gang)) return !0;
+		}
+		let duty = rule.onDuty ? this.dutyJob(source) : null;
+		for (let job of rule.jobs) {
+			let grade = this.jobGrade(source, job);
+			if (grade !== null && grade >= min(job) && (!rule.onDuty || duty === job)) return !0;
+		}
+		return !1;
 	}
 	countOnDuty(jobs) {
 		this.start();
@@ -1167,21 +1288,17 @@ const EVENTS = { toggle: "ai-doorlock:toggle" }, DOOR_TYPES = [
 		coords: point(l.coords)
 	} : null;
 }, doorType = (v) => DOOR_TYPES.find((t) => t === v) ?? "single";
-function readDoors(raw) {
-	let out = new Map();
-	for (let [id, value] of Object.entries(record(raw))) {
-		let v = record(value), type = doorType(v.type), picked = isDouble(type) ? [v.door, v.door2] : [v.door];
-		out.set(id, {
-			id,
-			label: str(v.label, id, 48),
-			type,
-			leaves: picked.map(leaf$1).filter((l) => l !== null),
-			locked: bool(v.locked, !0),
-			jobs: Array.isArray(v.jobs) ? v.jobs.filter((j) => typeof j == "string") : [],
-			distance: num(v.distance, 2.5, 1, 15)
-		});
-	}
-	return out;
+function readDoor(id, v) {
+	let type = doorType(v.type), picked = isDouble(type) ? [v.door, v.door2] : [v.door];
+	return {
+		id,
+		label: str(v.label, id, 48),
+		type,
+		leaves: picked.map(leaf$1).filter((l) => l !== null),
+		locked: bool(v.locked, !0),
+		access: readAccess(v),
+		distance: num(v.distance, 2.5, 1, 15)
+	};
 }
 function centreOf(door) {
 	let [a, b] = door.leaves;
@@ -1223,6 +1340,7 @@ const leaf = {
 			door2: unpicked,
 			locked: !0,
 			jobs: [],
+			gangs: [],
 			distance: 2.5
 		},
 		sections: {
@@ -1238,13 +1356,7 @@ const leaf = {
 			door: leaf,
 			door2: leaf,
 			locked: { type: "bool" },
-			jobs: {
-				type: "names",
-				lookup: "job",
-				max: 20,
-				itemMax: 32,
-				pattern: "^[a-z0-9_]{2,32}$"
-			},
+			...ACCESS_FIELDS,
 			distance: {
 				type: "number",
 				min: 1,
@@ -1330,14 +1442,7 @@ const leaf = {
 					label: "ADMIN_F_LOCKED",
 					hint: "ADMIN_H_LOCKED"
 				},
-				{
-					widget: "tags",
-					path: "jobs",
-					lookup: "job",
-					label: "ADMIN_F_JOBS",
-					hint: "ADMIN_H_JOBS",
-					placeholder: "ADMIN_P_JOBS"
-				},
+				...accessFields(),
 				{
 					widget: "number",
 					path: "distance",
@@ -1376,14 +1481,12 @@ function upgradeOldDoors() {
 	}
 }
 upgradeOldDoors();
-const locks = new GlobalGroup("door:", stateBoolean), doors = panel.view("doors", readDoors);
+const locks = new GlobalGroup("door:", stateBoolean), doors = new RecordObjects(panel, "doors", readDoor, (id, door) => (locks.get(id) === void 0 && locks.set(id, door.locked), () => {
+	doors.has(id) || locks.set(id, void 0);
+})).records;
+for (let id of locks.ids()) doors.has(id) || locks.set(id, void 0);
 aiLogChannels({ doors: { active: !1 } });
-function seed() {
-	for (let door of doors.value.values()) locks.get(door.id) === void 0 && locks.set(door.id, door.locked);
-	for (let id of locks.ids()) doors.value.has(id) || locks.set(id, void 0);
-}
-seed(), panel.onChange("doors", seed);
-const mayUse = (source, jobs) => jobs.length === 0 || online.jobs(source).some((job) => jobs.includes(job)), flips = new KeyedCooldowns();
+const flips = new KeyedCooldowns();
 onClientCallback(EVENTS.toggle, {
 	args: oneArg((id) => readText(id, 64)),
 	rate: {
@@ -1392,9 +1495,9 @@ onClientCallback(EVENTS.toggle, {
 	},
 	lock: !0
 }, (source, id) => {
-	let door = doors.value.get(id), c = door ? centreOf(door) : null;
+	let door = doors.get(id), c = door ? centreOf(door) : null;
 	if (!door || !c || !isNear(source, c, door.distance + 1.5)) return fail("DOOR_ERR_FAR");
-	if (!mayUse(source, door.jobs)) return fail("DOOR_ERR_DENIED");
+	if (!online.allows(source, door.access)) return fail("DOOR_ERR_DENIED");
 	if (!flips.take(id, 500)) return fail("DOOR_ERR_BUSY");
 	let locked = locks.get(id) !== !0;
 	return locks.set(id, locked), aiLog("doors", `${locked ? "locked" : "unlocked"} ${id}`, { source }), {
@@ -1403,10 +1506,10 @@ onClientCallback(EVENTS.toggle, {
 	};
 });
 const setState = (id, locked) => {
-	typeof id == "string" && doors.value.has(id) && locks.set(id, locked === !0 || locked === 1);
+	typeof id == "string" && doors.has(id) && locks.set(id, locked === !0 || locked === 1);
 };
 registerExport("SetDoorState", setState), registerExport("IsLocked", (id) => typeof id == "string" && locks.get(id) === !0), provideExport("ox_doorlock", "setDoorState", setState), provideExport("ox_doorlock", "getDoor", (id) => {
-	let door = typeof id == "string" ? doors.value.get(id) : void 0;
+	let door = typeof id == "string" ? doors.get(id) : void 0;
 	return door ? {
 		id: door.id,
 		name: door.label,

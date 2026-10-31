@@ -1,3 +1,4 @@
+import { ACCESS_FIELDS, accessFields } from "@aicore-fivem/lib/shared";
 import type { DataSpec, PanelSchema } from "@aicore-fivem/shared";
 import { DOOR_TYPES } from "common/doors";
 
@@ -27,6 +28,7 @@ export const schema: PanelSchema = {
         door2: unpicked,
         locked: true,
         jobs: [],
+        gangs: [],
         distance: 2.5,
       },
       sections: {
@@ -35,13 +37,7 @@ export const schema: PanelSchema = {
         door: leaf,
         door2: leaf,
         locked: { type: "bool" },
-        jobs: {
-          type: "names",
-          lookup: "job",
-          max: 20,
-          itemMax: 32,
-          pattern: "^[a-z0-9_]{2,32}$",
-        },
+        ...ACCESS_FIELDS,
         distance: { type: "number", min: 1, max: 15 },
       },
     },
@@ -110,14 +106,7 @@ export const schema: PanelSchema = {
               label: "ADMIN_F_LOCKED",
               hint: "ADMIN_H_LOCKED",
             },
-            {
-              widget: "tags",
-              path: "jobs",
-              lookup: "job",
-              label: "ADMIN_F_JOBS",
-              hint: "ADMIN_H_JOBS",
-              placeholder: "ADMIN_P_JOBS",
-            },
+            ...accessFields(),
             {
               widget: "number",
               path: "distance",

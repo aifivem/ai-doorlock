@@ -36,13 +36,12 @@ export class DoorSystem {
     this.registered.add(hash);
   }
 
-  clear(): void {
-    for (const hash of this.registered) {
-      DoorSystemSetDoorState(hash, 0, false, true);
-      RemoveDoorFromSystem(hash);
-    }
+  remove(name: string): void {
+    const hash = GetHashKey(`ai-doorlock:${name}`);
+    if (!this.registered.delete(hash)) return;
+    DoorSystemSetDoorState(hash, 0, false, true);
+    RemoveDoorFromSystem(hash);
     // `requests` is kept: a lock still waiting from before must not match a new request number.
-    this.registered.clear();
   }
 
   /**

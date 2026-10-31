@@ -101,15 +101,24 @@
           "type": "boolean"
         },
         "jobs": {
-          "description": "Jobs: Empty: anyone may lock and unlock. Otherwise members of these jobs.",
+          "description": "Jobs: Only members of these jobs can use it. Leave jobs and gangs empty for everyone.",
           "type": "array",
-          "maxItems": 20,
           "uniqueItems": true,
           "items": {
-            "type": "string",
-            "maxLength": 32,
-            "pattern": "^[a-z0-9_]{2,32}$"
+            "type": "string"
           }
+        },
+        "gangs": {
+          "description": "Gangs: Members of these gangs can use it too.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "onDuty": {
+          "description": "Only on duty: Job members must be on duty in that job.",
+          "type": "boolean"
         },
         "distance": {
           "description": "Reach: How close the player must be for the prompt. Gates and garage doors need more.",
@@ -124,7 +133,6 @@
         "door",
         "door2",
         "locked",
-        "jobs",
         "distance"
       ]
     }

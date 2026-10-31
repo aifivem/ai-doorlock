@@ -1,4 +1,11 @@
-import { bool, num, record, str } from "@aicore-fivem/lib/shared";
+import {
+  type AccessRule,
+  bool,
+  num,
+  readAccess,
+  record,
+  str,
+} from "@aicore-fivem/lib/shared";
 
 /** ai-doorlock's contracts and panel content. No natives. */
 
@@ -52,8 +59,8 @@ export interface Door {
   leaves: Leaf[];
   /** Locked when the server starts. */
   locked: boolean;
-  /** Empty = anyone may lock it. */
-  jobs: string[];
+  /** Who may lock it (lib access fields; public = anyone). */
+  access: AccessRule;
   /** Metres from the door where the prompt shows. */
   distance: number;
 }
@@ -72,25 +79,19 @@ const leaf = (v: unknown): Leaf | null => {
 const doorType = (v: unknown): DoorType =>
   DOOR_TYPES.find((t) => t === v) ?? "single";
 
-export function readDoors(raw: unknown): Map<string, Door> {
-  const out = new Map<string, Door>();
-  for (const [id, value] of Object.entries(record(raw))) {
-    const v = record(value);
-    const type = doorType(v.type);
-    const picked = isDouble(type) ? [v.door, v.door2] : [v.door];
-    out.set(id, {
-      id,
-      label: str(v.label, id, 48),
-      type,
-      leaves: picked.map(leaf).filter((l): l is Leaf => l !== null),
-      locked: bool(v.locked, true),
-      jobs: Array.isArray(v.jobs)
-        ? v.jobs.filter((j): j is string => typeof j === "string")
-        : [],
-      distance: num(v.distance, 2.5, 1, 15),
-    });
-  }
-  return out;
+/** One door record (`panel.records` / `world.records`). */
+export function readDoor(id: string, v: Record<string, unknown>): Door {
+  const type = doorType(v.type);
+  const picked = isDouble(type) ? [v.door, v.door2] : [v.door];
+  return {
+    id,
+    label: str(v.label, id, 48),
+    type,
+    leaves: picked.map(leaf).filter((l): l is Leaf => l !== null),
+    locked: bool(v.locked, true),
+    access: readAccess(v),
+    distance: num(v.distance, 2.5, 1, 15),
+  };
 }
 
 /** The middle of a door (between both objects of a double door); null before an object is picked. */
