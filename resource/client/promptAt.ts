@@ -1,46 +1,47 @@
-import type { Vec3 } from "@aicore-fivem/lib/shared";
-import type { Door } from "common/doors";
+import type { PromptAnchor } from "@aicore-fivem/shared";
+import type { Door, Leaf } from "common/doors";
+import { modelHash } from "./doorSystem";
 
-/** Height on the door where its prompt floats (share of the model's height). */
-const HEIGHT = 0.55;
+/** Height on the leaf where its prompt floats (share of the model's height): the middle, as tgiann-doorlock. */
+const HEIGHT = 0.5;
 
-/** A model's size box: [min, max] in model space. */
-function box(model: string): [number[], number[]] {
-  const [min = [0, 0, 0], max = [0, 0, 0]] = GetModelDimensions(
-    GetHashKey(model),
-  ) as number[][];
-  return [min, max];
-}
-
-/**
- * Where a door's prompt floats: the middle of the leaf at about handle height. Read when the prompt shows (the door
- * is streamed then); a double door's middle is between its two leaves.
- */
-export function promptAt(door: Door, centre: Vec3): Vec3 {
-  const [first, second] = door.leaves;
-  if (!first) return centre;
-  const [min, max] = box(first.model);
-  const up = (min[2] ?? 0) + ((max[2] ?? 0) - (min[2] ?? 0)) * HEIGHT;
-  if (second) return { ...centre, z: centre.z + up };
-  const { x, y, z } = first.coords;
-  const entity = GetClosestObjectOfType(
+/** A leaf's object in the world, 0 while it is not there (not streamed, or the picked model is missing). */
+export function leafEntity(leaf: Leaf): number {
+  const { x, y, z } = leaf.coords;
+  return GetClosestObjectOfType(
     x,
     y,
     z,
     1,
-    GetHashKey(first.model),
+    modelHash(leaf.model),
     false,
     false,
     false,
   );
-  if (!entity) return { x, y, z: z + up };
-  // The leaf runs along the model's wide axis; the thin axis stays centred.
+}
+
+/** The middle of a leaf in its own model space: the leaf runs along the wide axis, the thin axis stays centred. */
+function leafMiddle(model: string): { x: number; y: number; z: number } {
+  const [min = [0, 0, 0], max = [0, 0, 0]] = GetModelDimensions(
+    modelHash(model),
+  ) as number[][];
   const mid = (i: number) => ((min[i] ?? 0) + (max[i] ?? 0)) / 2;
-  const [ox = 0, oy = 0, oz = 0] = GetOffsetFromEntityInWorldCoords(
-    entity,
-    mid(0),
-    mid(1),
-    up,
-  );
-  return { x: ox, y: oy, z: oz };
+  const z = (min[2] ?? 0) + ((max[2] ?? 0) - (min[2] ?? 0)) * HEIGHT;
+  return { x: mid(0), y: mid(1), z };
+}
+
+/** Whether any leaf of the door exists in the world: a door the game does not have gets no prompt. */
+export const doorFound = (door: Door): boolean =>
+  door.leaves.some((leaf) => leafEntity(leaf) !== 0);
+
+/**
+ * Where a door's prompt floats: the middle of each leaf object, riding it as it swings or slides; ai-lib shows the
+ * leaf nearest the player each frame (a double door's prompt sits on the leaf the player stands at).
+ */
+export function promptAt(door: Door, centre: PromptAnchor): PromptAnchor {
+  const anchors = door.leaves.flatMap((leaf) => {
+    const entity = leafEntity(leaf);
+    return entity ? [{ entity, offset: leafMiddle(leaf.model) }] : [];
+  });
+  return anchors.length ? { anchors } : centre;
 }

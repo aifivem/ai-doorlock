@@ -18,7 +18,7 @@ import {
   type Door,
 } from "common/doors";
 import { DoorSystem } from "./doorSystem";
-import { promptAt } from "./promptAt";
+import { doorFound, promptAt } from "./promptAt";
 
 const world = new AdminWorld(["doors"]);
 
@@ -66,8 +66,9 @@ class Doors {
       radius: door.distance,
       // The prompt sits on the door itself (tgiann-doorlock style), not in the right-hand list.
       world: () => promptAt(door, centre),
-      // A locked door's point shows only to who passes its access rule (the server checks the same rule).
-      canShow: () => allows(door.access),
+      // A locked door's point shows only to who passes its access rule (the server checks the same rule), and
+      // only when the door's object is in the world.
+      canShow: () => allows(door.access) && doorFound(door),
       onPressed: () => toggle(id),
     });
     return () => {

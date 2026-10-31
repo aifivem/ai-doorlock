@@ -9,14 +9,14 @@ const SHUT_RATIO = 0.1;
 const FORCE_LOCK_MS = 15_000;
 
 /** A picked model: its name, or the unsigned hash the panel writes as digits for models without a name. */
-const modelHash = (model: string): number =>
+export const modelHash = (model: string): number =>
   /^\d+$/.test(model) ? Number(model) : GetHashKey(model);
 
 const isShut = (hash: number): boolean =>
   Math.abs(DoorSystemGetOpenRatio(hash)) <= SHUT_RATIO;
 
 function lockNow(hash: number): void {
-  DoorSystemSetOpenRatio(hash, 0, false, true);
+  DoorSystemSetOpenRatio(hash, 0, true, true);
   DoorSystemSetDoorState(hash, 1, false, true);
 }
 
@@ -29,7 +29,10 @@ export class DoorSystem {
   add(name: string, leaf: Leaf, type: DoorType): void {
     const hash = GetHashKey(`ai-doorlock:${name}`);
     const { x, y, z } = leaf.coords;
-    AddDoorToSystem(hash, modelHash(leaf.model), x, y, z, false, false, false);
+    // A local script door, held locked for its first frame (tgiann-doorlock's registration): with the defaults the
+    // game's own entry for the object could keep one leaf of a double door.
+    AddDoorToSystem(hash, modelHash(leaf.model), x, y, z, true, true, true);
+    DoorSystemSetDoorState(hash, 4, false, true);
     // Garage doors and barriers keep the game's own speed: setting one stalls them.
     if (type !== "garage")
       DoorSystemSetAutomaticRate(hash, CLOSE_RATE, false, false);
