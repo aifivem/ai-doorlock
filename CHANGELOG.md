@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/aifivem/ai-doorlock/compare/v0.1.1...v0.1.2) (2026-10-31)
+
+
+### Miscellaneous Chores
+
+* rebuild with the current lib ([1e0fc8c](https://github.com/aifivem/ai-doorlock/commit/1e0fc8c39645d2fc7df2e8841bf758b16e5c391e))
+
 ## [0.1.1](https://github.com/aifivem/ai-doorlock/compare/v0.1.0...v0.1.1) (2026-10-31)
 
 
