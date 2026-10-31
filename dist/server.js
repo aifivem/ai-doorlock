@@ -161,8 +161,8 @@ var FileViews = class {
 	build;
 	records;
 	built = new Map();
-	constructor(source, file, readOne, build) {
-		this.build = build, this.records = source.records(file, readOne), source.onChange(file, (key) => key === void 0 ? this.rebuildAll() : this.rebuild(key)), this.rebuildAll();
+	constructor(source, file, records, build) {
+		this.build = build, this.records = typeof records == "function" ? source.records(file, records) : records, source.onChange(file, (key) => key === void 0 ? this.rebuildAll() : this.rebuild(key)), this.rebuildAll();
 	}
 	rebuild(key) {
 		this.built.get(key)?.(), this.built.delete(key);
@@ -301,6 +301,7 @@ const CORE = {
 	clientDefinitionsEvent: "ai-core:client:definitions",
 	vehicleTypeCallback: "ai-core:vehicleType",
 	interactionStateKey: "ai:interaction",
+	pvpStateKey: "ai:pvp",
 	charactersCallback: "ai-core:characters",
 	createCharacterCallback: "ai-core:createCharacter",
 	deleteCharacterCallback: "ai-core:deleteCharacter",
@@ -766,7 +767,7 @@ var AdminPanel = class {
 	constructor(schema) {
 		this.schema = schema;
 		for (let [name, spec] of Object.entries(schema.files)) this.load(name, spec);
-		registerExport("AdminPanelSnapshot", () => this.snapshot()), registerExport("AdminPanelSummary", () => this.summary()), registerExport("AdminPanelApply", (admin, patch) => this.apply(admin, patch)), onClientCallback(ADMIN.worldChangesCallback(this.resource), () => Object.fromEntries(this.worldChanges), { rate: {
+		registerExport("AdminPanelSnapshot", () => this.snapshot()), registerExport("AdminPanelData", () => this.dataSnapshot()), registerExport("AdminPanelSummary", () => this.summary()), registerExport("AdminPanelApply", (admin, patch) => this.apply(admin, patch)), onClientCallback(ADMIN.worldChangesCallback(this.resource), () => Object.fromEntries(this.worldChanges), { rate: {
 			count: 4,
 			windowMs: 1e4
 		} }), setImmediate(() => core$15.RegisterAdminPanel(this.resource));
@@ -794,8 +795,11 @@ var AdminPanel = class {
 			resource: this.resource,
 			schema: this.schema,
 			texts: loadLocaleTexts(),
-			data: clone(Object.fromEntries(this.data))
+			data: this.dataSnapshot()
 		};
+	}
+	dataSnapshot() {
+		return clone(Object.fromEntries(this.data));
 	}
 	summary() {
 		let data = {}, index = {};
