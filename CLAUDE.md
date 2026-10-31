@@ -15,7 +15,7 @@ Door locks from the admin panel: door types (single, double, sliding, double sli
 
 ## Contracts
 
-- Callback: `resource/common/doors.ts`. GlobalState `door:<id>`. Exports `SetDoorState(id, locked)`, `IsLocked(id)`; `ox_doorlock` `setDoorState`, `getDoor`.
+- Callback: `resource/common/doors.ts`. GlobalState `door:<id>`. Exports `SetDoorState(id, locked)`, `IsLocked(id)`; it `provide`s ox_doorlock and answers its `setDoorState` and `getDoor` (a provided name takes effect after a full server start).
 
 ## Entry points
 

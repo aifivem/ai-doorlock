@@ -81,7 +81,7 @@ onClientCallback(
   },
 );
 
-/** Exports (own and ox_doorlock's setDoorState / getDoor names). */
+/** Exports (own, and ox_doorlock's setDoorState / getDoor names under the name it `provide`s). */
 const setState = (id: unknown, locked: unknown) => {
   if (typeof id === "string" && doors.has(id))
     locks.set(id, locked === true || locked === 1);

@@ -21,3 +21,4 @@ files {
 	'locales/*.json',
 	'data/doors.json',
 }
+provide 'ox_doorlock'

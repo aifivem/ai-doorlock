@@ -39,5 +39,8 @@
   },
   "fxFiles": [
     "data/doors.json"
+  ],
+  "fxProvide": [
+    "ox_doorlock"
   ]
 }
