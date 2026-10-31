@@ -1,5 +1,380 @@
 {
   "$schema": "./schemas/doors.schema.json",
+  "pacific_security_gate": {
+    "label": "Pacific Standard - security gate",
+    "type": "single",
+    "door": {
+      "model": "hei_v_ilev_bk_gate2_pris",
+      "coords": {
+        "x": 261.83,
+        "y": 221.39,
+        "z": 106.41
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "pacific_thermite_1": {
+    "label": "Pacific Standard - thermite gate 1",
+    "type": "single",
+    "door": {
+      "model": "hei_v_ilev_bk_safegate_pris",
+      "coords": {
+        "x": 252.98,
+        "y": 220.65,
+        "z": 101.8
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "pacific_thermite_2": {
+    "label": "Pacific Standard - thermite gate 2",
+    "type": "single",
+    "door": {
+      "model": "hei_v_ilev_bk_safegate_pris",
+      "coords": {
+        "x": 261.68,
+        "y": 215.62,
+        "z": 101.81
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "paleto_bank_card_gate": {
+    "label": "Paleto Bank - card gate",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_cbankvaulgate01",
+      "coords": {
+        "x": -105.77,
+        "y": 6472.59,
+        "z": 31.81
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "paleto_bank_thermite": {
+    "label": "Paleto Bank - thermite gate",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_cbankvaulgate02",
+      "coords": {
+        "x": -106.26,
+        "y": 6476.01,
+        "z": 31.98
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "pacific_door_1": {
+    "label": "Pacific Standard - first door",
+    "type": "single",
+    "door": {
+      "model": "hei_v_ilev_bk_gate_pris",
+      "coords": {
+        "x": 257.41,
+        "y": 220.25,
+        "z": 106.4
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "pacific_door_2": {
+    "label": "Pacific Standard - second door",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_bk_door",
+      "coords": {
+        "x": 265.19,
+        "y": 217.84,
+        "z": 110.28
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "fleeca_hawick": {
+    "label": "Fleeca Hawick - vault gate",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gb_vaubar",
+      "coords": {
+        "x": 314.61,
+        "y": -285.82,
+        "z": 54.49
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "fleeca_legion": {
+    "label": "Fleeca Legion Square - vault gate",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gb_vaubar",
+      "coords": {
+        "x": 148.96,
+        "y": -1047.12,
+        "z": 29.7
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "fleeca_burton": {
+    "label": "Fleeca Burton - vault gate",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gb_vaubar",
+      "coords": {
+        "x": -351.7,
+        "y": -56.28,
+        "z": 49.38
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "fleeca_del_perro": {
+    "label": "Fleeca Del Perro - vault gate",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gb_vaubar",
+      "coords": {
+        "x": -1208.12,
+        "y": -335.586,
+        "z": 37.759
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "fleeca_great_ocean": {
+    "label": "Fleeca Great Ocean - vault gate",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gb_vaubar",
+      "coords": {
+        "x": -2956.18,
+        "y": 483.96,
+        "z": 16.02
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "prison_gate_1": {
+    "label": "Bolingbroke - gate 1",
+    "type": "single",
+    "door": {
+      "model": "prop_gate_prison_01",
+      "coords": {
+        "x": 1844.9,
+        "y": 2604.8,
+        "z": 44.6
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 13
+  },
+  "prison_gate_2": {
+    "label": "Bolingbroke - gate 2",
+    "type": "single",
+    "door": {
+      "model": "prop_gate_prison_01",
+      "coords": {
+        "x": 1818.5,
+        "y": 2604.8,
+        "z": 44.6
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 13
+  },
+  "prison_gate_3": {
+    "label": "Bolingbroke - gate 3",
+    "type": "single",
+    "door": {
+      "model": "prop_gate_prison_01",
+      "coords": {
+        "x": 1799.237,
+        "y": 2616.303,
+        "z": 44.6
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 10
+  },
   "mrpd_front": {
     "label": "Mission Row front doors",
     "type": "double",
@@ -24,5 +399,1958 @@
       "police"
     ],
     "distance": 2.5
+  },
+  "mrpd_lobby": {
+    "label": "Mission Row - lobby door",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_gendoor004",
+      "coords": {
+        "x": 450.13,
+        "y": -986.88,
+        "z": 30.69
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "mrpd_rooftop": {
+    "label": "Mission Row - rooftop",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gtdoor02",
+      "coords": {
+        "x": 464.3,
+        "y": -984.6,
+        "z": 43.8
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "mrpd_roof_hallway": {
+    "label": "Mission Row - hallway to roof",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_arm_secdoor",
+      "coords": {
+        "x": 461.32,
+        "y": -986.38,
+        "z": 30.69
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "mrpd_armory": {
+    "label": "Mission Row - armory",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_arm_secdoor",
+      "coords": {
+        "x": 452.6,
+        "y": -982.7,
+        "z": 30.6
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "mrpd_captain": {
+    "label": "Mission Row - captain's office",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_gendoor002",
+      "coords": {
+        "x": 447.72,
+        "y": -980.17,
+        "z": 30.81
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "mrpd_downstairs": {
+    "label": "Mission Row - to downstairs",
+    "type": "double",
+    "door": {
+      "model": "v_ilev_ph_gendoor005",
+      "coords": {
+        "x": 443.9,
+        "y": -989,
+        "z": 30.6
+      }
+    },
+    "door2": {
+      "model": "v_ilev_ph_gendoor005",
+      "coords": {
+        "x": 445.3,
+        "y": -988.7,
+        "z": 30.6
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "mrpd_cells_main": {
+    "label": "Mission Row - main cells",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_cellgate",
+      "coords": {
+        "x": 463.45,
+        "y": -992.6,
+        "z": 25.1
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1
+  },
+  "mrpd_cell_1": {
+    "label": "Mission Row - cell 1",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_cellgate",
+      "coords": {
+        "x": 461.89,
+        "y": -993.31,
+        "z": 25.13
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1
+  },
+  "mrpd_cell_2": {
+    "label": "Mission Row - cell 2",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_cellgate",
+      "coords": {
+        "x": 461.89,
+        "y": -998.81,
+        "z": 25.13
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1
+  },
+  "mrpd_cell_3": {
+    "label": "Mission Row - cell 3",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_cellgate",
+      "coords": {
+        "x": 461.89,
+        "y": -1002.44,
+        "z": 25.13
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1
+  },
+  "mrpd_to_back": {
+    "label": "Mission Row - to back",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gtdoor",
+      "coords": {
+        "x": 464.61,
+        "y": -1003.64,
+        "z": 24.98
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1
+  },
+  "mrpd_back": {
+    "label": "Mission Row - back doors",
+    "type": "double",
+    "door": {
+      "model": "v_ilev_rc_door2",
+      "coords": {
+        "x": 467.3,
+        "y": -1014.4,
+        "z": 26.5
+      }
+    },
+    "door2": {
+      "model": "v_ilev_rc_door2",
+      "coords": {
+        "x": 469.9,
+        "y": -1014.4,
+        "z": 26.5
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "mrpd_back_gate": {
+    "label": "Mission Row - back gate",
+    "type": "single",
+    "door": {
+      "model": "hei_prop_station_gate",
+      "coords": {
+        "x": 488.8,
+        "y": -1017.2,
+        "z": 27.1
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 14
+  },
+  "mrpd_briefing": {
+    "label": "Mission Row - briefing room",
+    "type": "double",
+    "door": {
+      "model": "v_ilev_ph_gendoor005",
+      "coords": {
+        "x": 455.94,
+        "y": -980.57,
+        "z": 26.67
+      }
+    },
+    "door2": {
+      "model": "v_ilev_ph_gendoor005",
+      "coords": {
+        "x": 455.85,
+        "y": -982.14,
+        "z": 26.67
+      }
+    },
+    "locked": false,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "mrpd_breakrooms": {
+    "label": "Mission Row - to breakrooms",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_gendoor005",
+      "coords": {
+        "x": 465.62,
+        "y": -985.93,
+        "z": 25.74
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1
+  },
+  "mrpd_new_cell_1": {
+    "label": "Mission Row - new cell 1",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_cellgate",
+      "coords": {
+        "x": 468.57,
+        "y": -999.44,
+        "z": 25.07
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1
+  },
+  "mrpd_new_cell_2": {
+    "label": "Mission Row - new cell 2",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_cellgate",
+      "coords": {
+        "x": 472.16,
+        "y": -999.47,
+        "z": 25.05
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1
+  },
+  "mrpd_new_cell_3": {
+    "label": "Mission Row - new cell 3",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_cellgate",
+      "coords": {
+        "x": 476.4,
+        "y": -1007.68,
+        "z": 24.41
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1
+  },
+  "mrpd_new_cell_4": {
+    "label": "Mission Row - new cell 4",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_cellgate",
+      "coords": {
+        "x": 480,
+        "y": -1007.7,
+        "z": 24.41
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1
+  },
+  "mrpd_photo_room": {
+    "label": "Mission Row - to photo room",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_gendoor006",
+      "coords": {
+        "x": 475.05,
+        "y": -995.08,
+        "z": 24.46
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1
+  },
+  "mrpd_lineup": {
+    "label": "Mission Row - to line-up room",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_gendoor006",
+      "coords": {
+        "x": 485.71,
+        "y": -996.08,
+        "z": 24.45
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1
+  },
+  "mrpd_interrogation_1": {
+    "label": "Mission Row - interrogation 1",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_gendoor005",
+      "coords": {
+        "x": 484.63,
+        "y": -999.74,
+        "z": 24.46
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1
+  },
+  "mrpd_interrogation_2": {
+    "label": "Mission Row - interrogation 2",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_gendoor005",
+      "coords": {
+        "x": 491.37,
+        "y": -999.81,
+        "z": 24.46
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1
+  },
+  "mrpd_evidence": {
+    "label": "Mission Row - to evidence",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_gendoor005",
+      "coords": {
+        "x": 470.78,
+        "y": -992.21,
+        "z": 25.12
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1
+  },
+  "paleto_pd_front": {
+    "label": "Paleto Bay PD - front doors",
+    "type": "double",
+    "door": {
+      "model": "v_ilev_ph_gendoor002",
+      "coords": {
+        "x": -436.5157,
+        "y": 6007.844,
+        "z": 28.13839
+      }
+    },
+    "door2": {
+      "model": "v_ilev_ph_gendoor002",
+      "coords": {
+        "x": -434.6776,
+        "y": 6009.681,
+        "z": 28.13839
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "paleto_pd_back_left": {
+    "label": "Paleto Bay PD - back door left",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_rc_door2",
+      "coords": {
+        "x": -450.9664,
+        "y": 6006.086,
+        "z": 31.99004
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "paleto_pd_back_right": {
+    "label": "Paleto Bay PD - back door right",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_rc_door2",
+      "coords": {
+        "x": -447.2363,
+        "y": 6002.317,
+        "z": 31.84003
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "paleto_pd_lockers": {
+    "label": "Paleto Bay PD - locker room",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_rc_door2",
+      "coords": {
+        "x": -450.7136,
+        "y": 6016.371,
+        "z": 31.86523
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "paleto_pd_lockers_2": {
+    "label": "Paleto Bay PD - locker room 2",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_rc_door2",
+      "coords": {
+        "x": -454.0435,
+        "y": 6010.243,
+        "z": 31.86106
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "paleto_pd_armory": {
+    "label": "Paleto Bay PD - armory",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_arm_secdoor",
+      "coords": {
+        "x": -439.1576,
+        "y": 5998.157,
+        "z": 31.86815
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "paleto_pd_interrogation": {
+    "label": "Paleto Bay PD - interrogation room",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_arm_secdoor",
+      "coords": {
+        "x": -436.6276,
+        "y": 6002.548,
+        "z": 28.14062
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "paleto_pd_cells_1": {
+    "label": "Paleto Bay PD - entrance cells 1",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_cellgate1",
+      "coords": {
+        "x": -438.228,
+        "y": 6006.167,
+        "z": 28.13558
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "paleto_pd_cells_2": {
+    "label": "Paleto Bay PD - entrance cells 2",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_cellgate1",
+      "coords": {
+        "x": -442.1082,
+        "y": 6010.052,
+        "z": 28.13558
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "paleto_pd_cell": {
+    "label": "Paleto Bay PD - cell",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_cellgate1",
+      "coords": {
+        "x": -444.3682,
+        "y": 6012.223,
+        "z": 28.13558
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "paleto_pd_hallway": {
+    "label": "Paleto Bay PD - hallway",
+    "type": "double",
+    "door": {
+      "model": "v_ilev_rc_door2",
+      "coords": {
+        "x": -441.0185,
+        "y": 6012.795,
+        "z": 31.86523
+      }
+    },
+    "door2": {
+      "model": "v_ilev_rc_door2",
+      "coords": {
+        "x": -442.8578,
+        "y": 6010.958,
+        "z": 31.86523
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "paleto_pd_hallway_back": {
+    "label": "Paleto Bay PD - hallway to the back",
+    "type": "double",
+    "door": {
+      "model": "v_ilev_rc_door2",
+      "coords": {
+        "x": -447.7283,
+        "y": 6006.702,
+        "z": 31.86523
+      }
+    },
+    "door2": {
+      "model": "v_ilev_rc_door2",
+      "coords": {
+        "x": -449.5656,
+        "y": 6008.538,
+        "z": 31.86523
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "prison_fence_gate": {
+    "label": "Bolingbroke - outside fence gate",
+    "type": "single",
+    "door": {
+      "model": "prop_fnclink_03gate5",
+      "coords": {
+        "x": 1796.322,
+        "y": 2596.574,
+        "z": 45.565
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "prison_outside_1": {
+    "label": "Bolingbroke - outside door 1",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gtdoor",
+      "coords": {
+        "x": 1821.677,
+        "y": 2477.265,
+        "z": 45.945
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "prison_outside_2": {
+    "label": "Bolingbroke - outside door 2",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gtdoor",
+      "coords": {
+        "x": 1760.692,
+        "y": 2413.251,
+        "z": 45.945
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "prison_outside_3": {
+    "label": "Bolingbroke - outside door 3",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gtdoor",
+      "coords": {
+        "x": 1543.58,
+        "y": 2470.252,
+        "z": 45.945
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "prison_outside_4": {
+    "label": "Bolingbroke - outside door 4",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gtdoor",
+      "coords": {
+        "x": 1659.733,
+        "y": 2397.475,
+        "z": 45.945
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "prison_outside_5": {
+    "label": "Bolingbroke - outside door 5",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gtdoor",
+      "coords": {
+        "x": 1537.731,
+        "y": 2584.842,
+        "z": 45.945
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "prison_outside_6": {
+    "label": "Bolingbroke - outside door 6",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gtdoor",
+      "coords": {
+        "x": 1571.964,
+        "y": 2678.354,
+        "z": 45.945
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "prison_outside_7": {
+    "label": "Bolingbroke - outside door 7",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gtdoor",
+      "coords": {
+        "x": 1650.18,
+        "y": 2755.104,
+        "z": 45.945
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "prison_outside_8": {
+    "label": "Bolingbroke - outside door 8",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gtdoor",
+      "coords": {
+        "x": 1771.98,
+        "y": 2759.98,
+        "z": 45.945
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "prison_outside_9": {
+    "label": "Bolingbroke - outside door 9",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gtdoor",
+      "coords": {
+        "x": 1845.7,
+        "y": 2699.79,
+        "z": 45.945
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "prison_outside_10": {
+    "label": "Bolingbroke - outside door 10",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gtdoor",
+      "coords": {
+        "x": 1820.68,
+        "y": 2621.95,
+        "z": 45.945
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "prison_offices": {
+    "label": "Bolingbroke - to offices",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gtdoor",
+      "coords": {
+        "x": 1819.129,
+        "y": 2593.64,
+        "z": 46.09929
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "prison_changing": {
+    "label": "Bolingbroke - to changing room",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gtdoor",
+      "coords": {
+        "x": 1827.365,
+        "y": 2587.547,
+        "z": 46.09929
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "prison_inmate_changing": {
+    "label": "Bolingbroke - to inmate changing room",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gtdoor",
+      "coords": {
+        "x": 1826.466,
+        "y": 2585.271,
+        "z": 46.09929
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1
+  },
+  "prison_checking": {
+    "label": "Bolingbroke - to checking room",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gtdoor",
+      "coords": {
+        "x": 1827.521,
+        "y": 2583.905,
+        "z": 45.28576
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "prison_check_gate": {
+    "label": "Bolingbroke - checking gate",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gtdoor",
+      "coords": {
+        "x": 1837.714,
+        "y": 2595.185,
+        "z": 46.09929
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "prison_checking_back": {
+    "label": "Bolingbroke - checking room from check",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gtdoor",
+      "coords": {
+        "x": 1837.697,
+        "y": 2585.24,
+        "z": 46.09929
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "prison_second_check": {
+    "label": "Bolingbroke - to second check gate",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_gtdoor",
+      "coords": {
+        "x": 1845.198,
+        "y": 2585.24,
+        "z": 46.09929
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": false,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1.5
+  },
+  "prison_main_hall": {
+    "label": "Bolingbroke - to main hall",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_door002",
+      "coords": {
+        "x": 1791.18,
+        "y": 2593.11,
+        "z": 46.15
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "prison_visitor": {
+    "label": "Bolingbroke - to visitor room",
+    "type": "single",
+    "door": {
+      "model": "prison_prop_door2",
+      "coords": {
+        "x": 1784,
+        "y": 2599,
+        "z": 46
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "prison_door_1": {
+    "label": "Bolingbroke - door 1",
+    "type": "single",
+    "door": {
+      "model": "prison_prop_door1",
+      "coords": {
+        "x": 1786,
+        "y": 2600,
+        "z": 46
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "prison_door_2": {
+    "label": "Bolingbroke - door 2",
+    "type": "double",
+    "door": {
+      "model": "prison_prop_door1",
+      "coords": {
+        "x": 1785,
+        "y": 2610,
+        "z": 46
+      }
+    },
+    "door2": {
+      "model": "prison_prop_door1a",
+      "coords": {
+        "x": 1787,
+        "y": 2610,
+        "z": 46
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "prison_door_3": {
+    "label": "Bolingbroke - door 3",
+    "type": "double",
+    "door": {
+      "model": "prison_prop_door2",
+      "coords": {
+        "x": 1781,
+        "y": 2602,
+        "z": 51
+      }
+    },
+    "door2": {
+      "model": "prison_prop_door2",
+      "coords": {
+        "x": 1778,
+        "y": 2602,
+        "z": 51
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "prison_door_4": {
+    "label": "Bolingbroke - door 4",
+    "type": "single",
+    "door": {
+      "model": "prison_prop_door2",
+      "coords": {
+        "x": 1780,
+        "y": 2596,
+        "z": 51
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "prison_door_5": {
+    "label": "Bolingbroke - door 5",
+    "type": "single",
+    "door": {
+      "model": "prison_prop_door1",
+      "coords": {
+        "x": 1787,
+        "y": 2621,
+        "z": 46
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "prison_door_6": {
+    "label": "Bolingbroke - door 6",
+    "type": "single",
+    "door": {
+      "model": "prison_prop_door2",
+      "coords": {
+        "x": 1788,
+        "y": 2606,
+        "z": 51
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "prison_door_7": {
+    "label": "Bolingbroke - door 7",
+    "type": "double",
+    "door": {
+      "model": "prison_prop_door1",
+      "coords": {
+        "x": 1791.1140136719,
+        "y": 2592.50390625,
+        "z": 46.3132473297119
+      }
+    },
+    "door2": {
+      "model": "prison_prop_door1a",
+      "coords": {
+        "x": 1791,
+        "y": 2595,
+        "z": 46
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "prison_doctor": {
+    "label": "Bolingbroke - to doctor room",
+    "type": "single",
+    "door": {
+      "model": "v_ilev_ph_gendoor002",
+      "coords": {
+        "x": 1786.4,
+        "y": 2579.8,
+        "z": 45.97
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 1
+  },
+  "prison_hall_gate": {
+    "label": "Bolingbroke - hall gate",
+    "type": "single",
+    "door": {
+      "model": "prison_prop_door2",
+      "coords": {
+        "x": 1786,
+        "y": 2567,
+        "z": 46
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "prison_hall_gate_2": {
+    "label": "Bolingbroke - hall gate 2",
+    "type": "single",
+    "door": {
+      "model": "prison_prop_door1",
+      "coords": {
+        "x": 1792,
+        "y": 2551,
+        "z": 46
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "prison_door_8": {
+    "label": "Bolingbroke - door 8",
+    "type": "double",
+    "door": {
+      "model": "prison_prop_door2",
+      "coords": {
+        "x": 1782,
+        "y": 2551,
+        "z": 50
+      }
+    },
+    "door2": {
+      "model": "prison_prop_door2",
+      "coords": {
+        "x": 1782,
+        "y": 2553,
+        "z": 50
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2.5
+  },
+  "prison_work_gate": {
+    "label": "Bolingbroke - gate to work",
+    "type": "single",
+    "door": {
+      "model": "prison_prop_door2",
+      "coords": {
+        "x": 1786,
+        "y": 2552,
+        "z": 50
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "prison_cell_main": {
+    "label": "Bolingbroke - cell main door",
+    "type": "single",
+    "door": {
+      "model": "prison_prop_door2",
+      "coords": {
+        "x": 1785,
+        "y": 2550,
+        "z": 46
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "prison_door_9": {
+    "label": "Bolingbroke - door 9",
+    "type": "single",
+    "door": {
+      "model": "prison_prop_door1a",
+      "coords": {
+        "x": 1776,
+        "y": 2551,
+        "z": 46
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 2
+  },
+  "mrpd_front_gate": {
+    "label": "Mission Row - front gate",
+    "type": "single",
+    "door": {
+      "model": "prop_facgate_07b",
+      "coords": {
+        "x": 419.99,
+        "y": -1025,
+        "z": 28.99
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "police"
+    ],
+    "distance": 15
+  },
+  "luxury_entrance": {
+    "label": "Luxury Autos - entrance doors",
+    "type": "double",
+    "door": {
+      "model": "prop_doorluxyry2",
+      "coords": {
+        "x": -803.0223,
+        "y": -222.5841,
+        "z": 37.87975
+      }
+    },
+    "door2": {
+      "model": "prop_doorluxyry2",
+      "coords": {
+        "x": -801.9622,
+        "y": -224.5203,
+        "z": 37.87975
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "cardealer",
+      "police"
+    ],
+    "distance": 3.5
+  },
+  "luxury_side": {
+    "label": "Luxury Autos - side entrance doors",
+    "type": "double",
+    "door": {
+      "model": "prop_doorluxyry",
+      "coords": {
+        "x": -778.1855,
+        "y": -244.3013,
+        "z": 37.33388
+      }
+    },
+    "door2": {
+      "model": "prop_doorluxyry",
+      "coords": {
+        "x": -776.1591,
+        "y": -243.5013,
+        "z": 37.33388
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "cardealer",
+      "police"
+    ],
+    "distance": 3.5
+  },
+  "luxury_garage": {
+    "label": "Luxury Autos - garage doors",
+    "type": "double",
+    "door": {
+      "model": "prop_autodoor",
+      "coords": {
+        "x": -770.6311,
+        "y": -240.0069,
+        "z": 37.43247
+      }
+    },
+    "door2": {
+      "model": "prop_autodoor",
+      "coords": {
+        "x": -765.6217,
+        "y": -237.9405,
+        "z": 37.43247
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "cardealer",
+      "police"
+    ],
+    "distance": 13
+  },
+  "pickle_front_1": {
+    "label": "Pickle Rental - front door 1",
+    "type": "single",
+    "door": {
+      "model": "apa_prop_apa_cutscene_doorb",
+      "coords": {
+        "x": -21.71276,
+        "y": -1392.778,
+        "z": 29.63847
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "cardealer"
+    ],
+    "distance": 2.5
+  },
+  "pickle_front_2": {
+    "label": "Pickle Rental - front door 2",
+    "type": "single",
+    "door": {
+      "model": "apa_prop_apa_cutscene_doorb",
+      "coords": {
+        "x": -32.67987,
+        "y": -1392.064,
+        "z": 29.63847
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "cardealer"
+    ],
+    "distance": 2.5
+  },
+  "pickle_cellar": {
+    "label": "Pickle Rental - door to cellar",
+    "type": "single",
+    "door": {
+      "model": "apa_prop_apa_cutscene_doorb",
+      "coords": {
+        "x": -24.22668,
+        "y": -1403.067,
+        "z": 29.63847
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "cardealer"
+    ],
+    "distance": 1.5
+  },
+  "pickle_back": {
+    "label": "Pickle Rental - back door",
+    "type": "single",
+    "door": {
+      "model": "apa_prop_apa_cutscene_doorb",
+      "coords": {
+        "x": -21.27107,
+        "y": -1406.845,
+        "z": 29.63847
+      }
+    },
+    "door2": {
+      "model": "",
+      "coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "locked": true,
+    "jobs": [
+      "cardealer"
+    ],
+    "distance": 2
   }
 }
