@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/aifivem/ai-doorlock/compare/v0.1.2...v0.1.3) (2026-11-01)
+
+
+### Code Refactoring
+
+* feature folders, side entries that only import, panel schema per tab ([e40ad01](https://github.com/aifivem/ai-doorlock/commit/e40ad01af95a65dae3b4a1029a34991898df4202))
+
 ## [0.1.2](https://github.com/aifivem/ai-doorlock/compare/v0.1.1...v0.1.2) (2026-10-31)
 
 
