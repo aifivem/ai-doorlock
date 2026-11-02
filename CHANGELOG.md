@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.5](https://github.com/aifivem/ai-doorlock/compare/v0.1.4...v0.1.5) (2026-11-02)
+
+
+### Documentation
+
+* install from the release zip ([5f0cb60](https://github.com/aifivem/ai-doorlock/commit/5f0cb60b543adb8f610c2baa50abd7fb67685cb3))
+
+
+### Miscellaneous Chores
+
+* build files are no longer in git, the release zip carries them ([3d55155](https://github.com/aifivem/ai-doorlock/commit/3d5515581268667ea2b542ea17c5d98336a85cfc))
+
 ## [0.1.4](https://github.com/aifivem/ai-doorlock/compare/v0.1.3...v0.1.4) (2026-11-02)
 
 
