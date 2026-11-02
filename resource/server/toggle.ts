@@ -5,8 +5,8 @@ import {
   KeyedCooldowns,
   onClientCallback,
   online,
-} from "@aicore-fivem/lib/server";
-import { fail, oneArg, readText } from "@aicore-fivem/lib/shared";
+} from "@aifivem/lib/server";
+import { fail, oneArg, readText } from "@aifivem/lib/shared";
 import { centreOf, EVENTS } from "common/doors";
 import { doors, locks } from "./doors";
 

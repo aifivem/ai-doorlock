@@ -1,5 +1,5 @@
-import { GlobalGroup, stateBoolean } from "@aicore-fivem/lib/server";
-import { RecordObjects } from "@aicore-fivem/lib/shared";
+import { GlobalGroup, stateBoolean } from "@aifivem/lib/server";
+import { RecordObjects } from "@aifivem/lib/shared";
 import { DOOR_PREFIX, readDoor } from "common/doors";
 import { panel } from "./panel";
 

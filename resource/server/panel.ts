@@ -1,5 +1,5 @@
-import { AdminPanel } from "@aicore-fivem/lib/server";
-import { record } from "@aicore-fivem/lib/shared";
+import { AdminPanel } from "@aifivem/lib/server";
+import { record } from "@aifivem/lib/shared";
 import { schema } from "./schema";
 
 export const panel = new AdminPanel(schema);

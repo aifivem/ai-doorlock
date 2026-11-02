@@ -1,4 +1,4 @@
-import { provideExport, registerExport } from "@aicore-fivem/lib/server";
+import { provideExport, registerExport } from "@aifivem/lib/server";
 import { doors, locks } from "./doors";
 
 /** Exports (own, and ox_doorlock's setDoorState / getDoor names under the name it `provide`s). */

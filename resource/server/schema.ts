@@ -1,5 +1,5 @@
-import { ACCESS_FIELDS, accessFields } from "@aicore-fivem/lib/shared";
-import type { DataSpec, PanelSchema } from "@aicore-fivem/shared";
+import { ACCESS_FIELDS, accessFields } from "@aifivem/lib/shared";
+import type { DataSpec, PanelSchema } from "@aifivem/shared";
 import { DOOR_TYPES } from "common/doors";
 
 /** One door object: picked in the world, model "" until then. */
